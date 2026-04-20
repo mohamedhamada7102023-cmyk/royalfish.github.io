@@ -3,132 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Royal Fish | رويال فيش - طعم الملوك</title>
+    <title>رويال فيش | طعم الملوك</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        /* الألوان الملكية: الكحلي والذهبي */
-        :root {
-            --primary-color: #002147; /* كحلي ملكي */
-            --accent-color: #d4af37;  /* ذهبي */
-            --text-light: #ffffff;
-            --bg-light: #f9f9f9;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-light);
-            color: var(--primary-color);
-        }
-
-        header {
-            background-color: var(--primary-color);
-            color: var(--text-light);
-            padding: 60px 20px;
-            text-align: center;
-            border-bottom: 5px solid var(--accent-color);
-        }
-
-        .hero-section h1 {
-            font-size: 3rem;
-            margin: 0;
-            letter-spacing: 2px;
-        }
-
-        .hero-section p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: auto;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .fish-preview {
-            width: 100%;
-            max-width: 600px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            margin: 30px 0;
-            /* هنا ستضع صورة السمكة التي ستقصها بالفوتوشوب */
-        }
-
-        .features {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            margin: 40px 0;
-        }
-
-        .feature-item {
-            flex: 1;
-            min-width: 250px;
-            padding: 20px;
-        }
-
-        .cta-button {
-            background-color: var(--accent-color);
-            color: var(--primary-color);
-            padding: 20px 40px;
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-decoration: none;
-            border-radius: 50px;
-            display: inline-block;
-            transition: transform 0.3s ease;
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
-        }
-
-        .cta-button:hover {
-            transform: scale(1.05);
-        }
-
-        footer {
-            background: #eee;
-            padding: 20px;
-            font-size: 0.9rem;
-            margin-top: 50px;
-        }
+        :root { --blue: #001a35; --gold: #d4af37; --white: #ffffff; }
+        body { font-family: 'Cairo', sans-serif; margin: 0; background: #f4f4f4; color: var(--blue); }
+        header { background: var(--blue); padding: 40px 20px; text-align: center; border-bottom: 5px solid var(--gold); }
+        .logo-img { max-width: 400px; width: 100%; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5)); }
+        .container { max-width: 1200px; margin: auto; padding: 40px 20px; }
+        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 40px; color: var(--blue); }
+        .categories { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
+        .card { background: var(--white); border-radius: 15px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.1); transition: 0.3s; border: 1px solid #eee; text-align: center; }
+        .card:hover { transform: translateY(-10px); border-color: var(--gold); }
+        .card img { width: 100%; height: 250px; object-fit: cover; border-bottom: 3px solid var(--gold); }
+        .card h3 { margin: 15px 0; font-size: 1.5rem; }
+        .cta-box { text-align: center; margin-top: 60px; background: var(--blue); padding: 40px; border-radius: 20px; color: white; border: 2px solid var(--gold); }
+        .whatsapp-btn { background: var(--gold); color: var(--blue); padding: 15px 40px; text-decoration: none; font-weight: bold; border-radius: 50px; font-size: 1.2rem; display: inline-block; transition: 0.3s; }
+        .whatsapp-btn:hover { background: white; transform: scale(1.1); }
     </style>
 </head>
 <body>
 
-    <header class="hero-section">
-        <h1>ROYAL FISH 👑</h1>
-        <p>من مزارعنا، بحرنا، وبحيراتنا.. إلى مائدتكم مباشرة</p>
-    </header>
+<header>
+    <img src="royal-fish-text.png.png" alt="Royal Fish" class="logo-img">
+</header>
 
-    <div class="container">
-        <img src="hero-fish.png" alt="سمك طازج ملكي" class="fish-preview">
-        
-        <h2>تجربة طعام استثنائية لنخبة المجتمع</h2>
-        
-        <div class="features">
-            <div class="feature-item">
-                <h3>🌊 صيد اليوم</h3>
-                <p>نضمن لك سمكاً خرج من الماء فجر اليوم ليصلك طازجاً تماماً.</p>
-            </div>
-            <div class="feature-item">
-                <h3>💎 جودة ملكية</h3>
-                <p>فرز أول بالواحدة، تنظيف احترافي، وتغليف يليق بفخامتك.</p>
-            </div>
-            <div class="feature-item">
-                <h3>🚀 توصيل مبرد</h3>
-                <p>أسطول توصيل مجهز للحفاظ على درجة الحرارة المثالية للسمك.</p>
-            </div>
+<div class="container">
+    <h2 class="section-title">فئاتنا الملكية</h2>
+    <div class="categories">
+        <div class="card">
+            <img src="shrimp.png.jpeg" alt="جمبري ملكي">
+            <h3>قسم الجمبري والفسفور</h3>
         </div>
-
-        <a href="https://wa.me/201006407185?text=أريد%20طلب%20أكلة%20سمك%20ملكية" class="cta-button">
-            اطلب الآن عبر واتساب
-        </a>
+        <div class="card">
+            <img src="tilapia.png.jpeg" alt="سمك بلطي">
+            <h3>أسماك النيل الطازجة</h3>
+        </div>
+        <div class="card">
+            <img src="sea-fish.png.jpeg" alt="سمك بحر">
+            <h3>كنوز البحر المتوسط</h3>
+        </div>
+        <div class="card">
+            <img src="platters.png.jpeg" alt="صواني سمك">
+            <h3>الولائم والعزومات</h3>
+        </div>
     </div>
-
-    <footer>
-        <p>&copy; 2026 Royal Fish - جميع الحقوق محفوظة لشركة رويال فيش</p>
-    </footer>
+    <div class="cta-box">
+        <h2>هل أنت جاهز لتجربة طعم الملوك؟</h2>
+        <a href="https://wa.me/201006407185" class="whatsapp-btn">اطلب الآن عبر واتساب</a>
+    </div>
+</div>
 
 </body>
 </html>
