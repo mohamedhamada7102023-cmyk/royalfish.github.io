@@ -11,8 +11,8 @@
         body, html { 
             margin: 0; padding: 0; width: 100%; min-height: 100%; 
             font-family: 'Cairo', sans-serif; background-color: var(--dark);
-            /* الخلفية هي صورة اللوجو وتتغير مرونتها مع الشاشة */
-            background-image: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('royal-fish-text.png.png');
+            /* استخدام صورة البراند كخلفية ثابتة للموقع */
+            background-image: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('image_4700b7.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -22,19 +22,25 @@
 
         header { text-align: center; padding: 5vh 10px; }
 
-        /* اللوجو مرن يكبر ويصغر حسب الشاشة */
-        .logo-full {
-            width: 80%;
-            max-width: 550px; /* أقصى حجم للكمبيوتر */
+        /* تنسيق صورة البراند لتكون واجهة مرنة */
+        .brand-image {
+            width: 90%; /* تأخذ معظم العرض في الموبايل */
+            max-width: 700px; /* أقصى حجم للكمبيوتر */
             height: auto;
-            filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.4));
-            transition: width 0.3s ease;
+            border-radius: 15px; /* حواف ناعمة للصورة */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7); /* ظل لإبراز الصورة */
+            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.2));
+            transition: transform 0.3s ease;
+        }
+
+        .brand-image:hover {
+            transform: scale(1.02); /* تأثير حركة بسيط عند الوقوف بالماوس */
         }
 
         .section-title { 
             font-size: clamp(1.8rem, 5vw, 3rem); 
             text-align: center; color: var(--gold); 
-            margin: 30px 0; 
+            margin: 40px 0; 
             text-shadow: 2px 2px 15px rgba(0,0,0,0.9);
         }
 
@@ -42,6 +48,7 @@
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
             gap: 25px; max-width: 1200px; margin: 0 auto; padding: 20px;
+            padding-bottom: 50px;
         }
 
         .category-link { text-decoration: none; color: inherit; }
@@ -53,17 +60,22 @@
             border-radius: 20px;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.15);
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: 0.4s ease;
             text-align: center;
         }
 
-        .card:hover { transform: scale(1.03); border-color: var(--gold); background: rgba(212, 175, 55, 0.1); }
+        .card:hover { 
+            transform: translateY(-10px); 
+            border-color: var(--gold); 
+            background: rgba(212, 175, 55, 0.1); 
+        }
+
         .card img { width: 100%; height: 280px; object-fit: cover; }
         .card h3 { margin: 15px; font-size: 1.6rem; text-shadow: 1px 1px 5px #000; }
 
-        /* تعديلات الموبايل الصغير */
+        /* تعديلات للشاشات الصغيرة جداً */
         @media (max-width: 480px) {
-            .logo-full { width: 95%; }
+            .brand-image { width: 95%; }
             .card img { height: 220px; }
         }
     </style>
@@ -71,7 +83,7 @@
 <body>
 
     <header>
-        <img src="royal-fish-text.png.png" alt="Royal Fish" class="logo-full">
+        <img src="image_4700b7.jpg" alt="Royal Fish Brand" class="brand-image">
     </header>
 
     <h2 class="section-title">قائمة الملوك</h2>
