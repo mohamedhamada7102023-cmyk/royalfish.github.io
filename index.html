@@ -3,141 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>رويال فيش | المتجر الملكي</title>
+    <title>رويال فيش | طعم الملوك</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --gold: #d4af37; --dark: #000000; --glass: rgba(255, 255, 255, 0.1); }
         
+        * { box-sizing: border-box; }
         body, html { 
-            margin: 0; padding: 0; width: 100%; min-height: 100%; 
-            font-family: 'Cairo', sans-serif; background-color: var(--dark);
-            background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('main-logo.png.PNG');
+            margin: 0; padding: 0; font-family: 'Cairo', sans-serif; background: var(--dark);
+            background-image: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('main-logo.png.PNG');
             background-size: cover; background-position: center; background-attachment: fixed;
-            color: white; overflow-x: hidden;
+            color: white; overflow-x: hidden; scroll-behavior: smooth;
         }
 
-        /* شريط التنقل العلوي */
+        /* شريط التنقل */
         .navbar {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 25px; background: rgba(0,0,0,0.5); backdrop-filter: blur(10px);
+            padding: 15px 20px; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
             position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--gold);
         }
 
-        .menu-btn, .cart-btn { font-size: 1.5rem; color: var(--gold); cursor: pointer; background: none; border: none; }
+        .menu-btn, .nav-icons i { font-size: 1.4rem; color: var(--gold); cursor: pointer; transition: 0.3s; }
+        .badge { background: #ff4757; color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 50%; position: relative; top: -10px; right: 5px; }
 
-        /* الشريط الجانبي (Sidebar) */
+        /* القائمة الجانبية */
         .sidebar {
             position: fixed; top: 0; right: -300px; width: 280px; height: 100%;
-            background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(15px);
-            z-index: 2000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 20px; border-left: 2px solid var(--gold);
+            background: rgba(0, 0, 0, 0.95); z-index: 2000; transition: 0.4s; padding: 20px;
+            border-left: 2px solid var(--gold);
         }
-
         .sidebar.active { right: 0; }
-
-        .sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--gold); padding-bottom: 15px; margin-bottom: 20px; }
-        
+        .sidebar h2 { color: var(--gold); border-bottom: 1px solid var(--glass); padding-bottom: 10px; }
         .sidebar-menu { list-style: none; padding: 0; }
-        .sidebar-menu li { margin: 20px 0; }
-        .sidebar-menu a { color: white; text-decoration: none; font-size: 1.2rem; display: flex; align-items: center; gap: 15px; transition: 0.3s; }
-        .sidebar-menu a:hover { color: var(--gold); padding-right: 10px; }
+        .sidebar-menu li { padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
+        .sidebar-menu li:hover { color: var(--gold); }
 
-        /* أيقونة الإشعارات للسلة والمفضلة */
-        .badge { background: red; color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 50%; vertical-align: top; margin-right: -10px; }
+        /* الواجهة */
+        header { text-align: center; padding: 40px 10px; }
+        .brand-img { width: 90%; max-width: 500px; border-radius: 15px; border: 1px solid var(--gold); box-shadow: 0 0 30px rgba(0,0,0,0.5); }
 
-        header { text-align: center; padding: 30px 10px; }
-        .brand-header-img { width: 80%; max-width: 500px; border-radius: 15px; border: 1px solid var(--gold); }
+        .container { max-width: 1200px; margin: auto; padding: 20px; }
+        .section-title { text-align: center; color: var(--gold); font-size: 2rem; margin-bottom: 30px; }
 
-        .section-title { text-align: center; color: var(--gold); margin: 20px 0; font-size: 2rem; }
-
-        .categories { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto; }
-        .card { background: var(--glass); backdrop-filter: blur(10px); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); text-align: center; transition: 0.3s; }
+        /* الكروت */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .card { 
+            background: var(--glass); backdrop-filter: blur(10px); border-radius: 20px; 
+            overflow: hidden; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s;
+            position: relative;
+        }
         .card:hover { transform: translateY(-10px); border-color: var(--gold); }
         .card img { width: 100%; height: 250px; object-fit: cover; }
-        .card h3 { padding: 15px; }
+        .card-body { padding: 15px; text-align: center; }
+        
+        .fresh-tag { position: absolute; top: 10px; left: 10px; background: #2ed573; padding: 3px 10px; border-radius: 5px; font-size: 0.8rem; }
 
-        /* طبقة التعتيم عند فتح القائمة */
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1500; display: none; }
+        select { width: 100%; padding: 8px; margin: 10px 0; background: #1a1a1a; color: white; border: 1px solid var(--gold); border-radius: 5px; }
+
+        .btn-group { display: flex; gap: 10px; margin-top: 10px; }
+        .btn-buy { flex: 3; background: var(--gold); color: black; border: none; padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        .btn-fav { flex: 1; background: none; border: 1px solid #ff4757; color: #ff4757; border-radius: 5px; cursor: pointer; }
+
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1500; display: none; }
         .overlay.active { display: block; }
+
+        /* لإخفاء وإظهار الأقسام */
+        .page { display: none; }
+        .page.active { display: block; }
     </style>
 </head>
 <body>
 
-    <div class="overlay" id="overlay"></div>
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
     <nav class="navbar">
-        <button class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-        <div style="font-weight: 900; color: var(--gold); font-size: 1.4rem;">ROYAL FISH</div>
-        <div class="cart-btn">
-            <i class="fas fa-heart" style="margin-left: 15px;"> <span class="badge" id="fav-count">0</span></i>
-            <i class="fas fa-shopping-cart"> <span class="badge" id="cart-count">0</span></i>
+        <i class="fas fa-bars menu-btn" onclick="toggleSidebar()"></i>
+        <div onclick="showPage('home')" style="cursor:pointer; font-weight:900; color:var(--gold); font-size:1.5rem;">ROYAL FISH</div>
+        <div class="nav-icons">
+            <i class="fas fa-heart"><span class="badge">0</span></i>
+            <i class="fas fa-shopping-cart" style="margin-right:15px;"><span class="badge">0</span></i>
         </div>
     </nav>
 
     <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <h2 style="color: var(--gold); margin: 0;">القائمة</h2>
-            <button class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-times"></i></button>
-        </div>
+        <h2>القائمة الملكية</h2>
         <ul class="sidebar-menu">
-            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
-            <li><a href="#"><i class="fas fa-user"></i> تسجيل الدخول</a></li>
-            <li><hr style="border: 0.5px solid var(--glass);"></li>
-            <li><a href="shrimp.html"><i class="fas fa-fish"></i> قسم الجمبري</a></li>
-            <li><a href="tilapia.html"><i class="fas fa-fish"></i> أسماك النيل</a></li>
-            <li><a href="sea-fish.html"><i class="fas fa-water"></i> كنوز البحر</a></li>
-            <li><a href="platters.html"><i class="fas fa-utensils"></i> الولائم</a></li>
-            <li><hr style="border: 0.5px solid var(--glass);"></li>
-            <li><a href="#"><i class="fas fa-heart" style="color: #ff4757;"></i> المفضلة</a></li>
-            <li><a href="#"><i class="fas fa-shopping-basket" style="color: #2ed573;"></i> سلة المشتريات</a></li>
+            <li onclick="showPage('home')"><i class="fas fa-home"></i> الرئيسية</li>
+            <li onclick="showPage('shrimp')"><i class="fas fa-fish"></i> الجمبري والكابوريا</li>
+            <li onclick="showPage('nile')"><i class="fas fa-water"></i> أسماك النيل</li>
+            <li onclick="showPage('sea')"><i class="fas fa-anchor"></i> سمك البحر</li>
+            <li onclick="showPage('platters')"><i class="fas fa-utensils"></i> الصواني والولائم</li>
+            <hr style="border:0.1px solid var(--glass)">
+            <li><i class="fas fa-user"></i> تسجيل الدخول</li>
         </ul>
     </div>
 
-    <header>
-        <img src="main-logo.png.PNG" alt="Royal Fish" class="brand-header-img">
-    </header>
+    <div id="home" class="page active">
+        <header><img src="main-logo.png.PNG" class="brand-img"></header>
+        <div class="container">
+            <h2 class="section-title">اختر فئتك</h2>
+            <div class="grid">
+                <div class="card" onclick="showPage('shrimp')"><img src="shrimp.png.jpeg"><h3>الجمبري والكابوريا</h3></div>
+                <div class="card" onclick="showPage('nile')"><img src="tilapia.png.jpeg"><h3>أسماك النيل</h3></div>
+                <div class="card" onclick="showPage('sea')"><img src="sea-fish.png.jpeg"><h3>سمك البحر</h3></div>
+                <div class="card" onclick="showPage('platters')"><img src="platters.png.jpeg"><h3>الصواني الملكية</h3></div>
+            </div>
+        </div>
+    </div>
 
-    <h2 class="section-title">قائمة الملوك</h2>
-    
-    <div class="categories">
-        <a href="shrimp.html" style="text-decoration:none; color:inherit;">
-            <div class="card">
-                <img src="shrimp.png.jpeg" alt="جمبري">
-                <h3>قسم الجمبري</h3>
-            </div>
-        </a>
-        <a href="tilapia.html" style="text-decoration:none; color:inherit;">
-            <div class="card">
-                <img src="tilapia.png.jpeg" alt="بلطي">
-                <h3>أسماك النيل</h3>
-            </div>
-        </a>
-        <a href="sea-fish.html" style="text-decoration:none; color:inherit;">
-            <div class="card">
-                <img src="sea-fish.png.jpeg" alt="سمك بحر">
-                <h3>كنوز البحر</h3>
-            </div>
-        </a>
-        <a href="platters.html" style="text-decoration:none; color:inherit;">
-            <div class="card">
-                <img src="platters.png.jpeg" alt="صواني">
-                <h3>الولائم الملكية</h3>
-            </div>
-        </a>
+    <div id="category-page" class="page">
+        <div class="container">
+            <button onclick="showPage('home')" style="background:none; border:1px solid var(--gold); color:var(--gold); padding:5px 15px; border-radius:5px; cursor:pointer; margin-bottom:20px;">← العودة</button>
+            <h2 id="cat-title" class="section-title"></h2>
+            <div id="product-grid" class="grid"></div>
+        </div>
     </div>
 
     <script>
+        const data = {
+            shrimp: { title: "قسم الجمبري والكابوريا", img: "shrimp.png.jpeg", items: ["جمبري جامبو كبير", "جمبري جامبو وسط", "جمبري أبيض", "جمبري قزازي", "جمبري سركوس", "كابوريا نتاية", "كابوريا ذكر"] },
+            nile: { title: "أسماك النيل الطازجة", img: "tilapia.png.jpeg", items: ["بلطي كبير", "بلطي وسط", "بوري", "طوبار", "جمبري نيل"] },
+            sea: { title: "كنوز البحر المتوسط", img: "sea-fish.png.jpeg", items: ["سمك شك", "سمك باغه", "مرجان", "سردين", "بساريه"] },
+            platters: { title: "الصواني والولائم", img: "platters.png.jpeg", items: ["صينية عزومة ملكية", "تشكيلة رويال فسفور", "صينية السعادة مشكل"] }
+        };
+
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('active');
             document.getElementById('overlay').classList.toggle('active');
         }
 
-        // إغلاق القائمة عند الضغط على التعتيم
-        document.getElementById('overlay').onclick = function() {
-            toggleSidebar();
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            toggleSidebar(); // إغلاق القائمة عند الاختيار
+            window.scrollTo(0,0);
+
+            if (data[pageId]) {
+                const page = data[pageId];
+                document.getElementById('cat-title').innerText = page.title;
+                const grid = document.getElementById('product-grid');
+                grid.innerHTML = "";
+                
+                page.items.forEach(item => {
+                    grid.innerHTML += `
+                        <div class="card">
+                            <span class="fresh-tag">طازج اليوم</span>
+                            <img src="${page.img}">
+                            <div class="card-body">
+                                <h3>${item}</h3>
+                                <select>
+                                    <option>تنظيف (سنجاري)</option>
+                                    <option>تنظيف (قشر وبطن)</option>
+                                    <option>بدون تنظيف</option>
+                                    <option>مخلي (فيليه)</option>
+                                </select>
+                                <div class="btn-group">
+                                    <button class="btn-buy" onclick="alert('تمت الإضافة للسلة')">إضافة للسلة</button>
+                                    <button class="btn-fav"><i class="fas fa-heart"></i></button>
+                                </div>
+                            </div>
+                        </div>`;
+                });
+                document.getElementById('category-page').classList.add('active');
+            } else {
+                document.getElementById(pageId).classList.add('active');
+            }
         }
     </script>
-
 </body>
 </html>
