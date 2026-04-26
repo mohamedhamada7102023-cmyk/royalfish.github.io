@@ -16,6 +16,7 @@
             color: white; overflow-x: hidden; scroll-behavior: smooth;
         }
 
+        /* Navbar */
         .navbar {
             display: flex; justify-content: space-between; align-items: center;
             padding: 15px 20px; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
@@ -24,6 +25,7 @@
         .menu-btn, .nav-icons i { font-size: 1.4rem; color: var(--gold); cursor: pointer; position: relative; }
         .badge { background: #ff4757; color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 50%; position: absolute; top: -10px; right: -10px; }
 
+        /* Sidebar */
         .sidebar {
             position: fixed; top: 0; right: -300px; width: 280px; height: 100%;
             background: rgba(0, 0, 0, 0.95); z-index: 2000; transition: 0.4s; padding: 20px;
@@ -33,6 +35,7 @@
         .sidebar-menu { list-style: none; padding: 0; }
         .sidebar-menu li { padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
 
+        /* Modals */
         .modal {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             background: rgba(0,0,0,0.98); padding: 25px; border-radius: 20px;
@@ -41,16 +44,17 @@
         }
         .modal.active { display: block; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--gold); padding-bottom: 10px; margin-bottom: 15px; }
-        
         .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--glass); }
         .cart-item button { background: #ff4757; border: none; color: white; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
 
+        /* General Layout */
         header { text-align: center; padding: 40px 10px; }
         .brand-img { width: 90%; max-width: 500px; border-radius: 15px; border: 1px solid var(--gold); }
         .container { max-width: 1200px; margin: auto; padding: 20px; }
         .section-title { text-align: center; color: var(--gold); font-size: 2rem; margin-bottom: 30px; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        /* Cards Grid */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
         .card { background: var(--glass); backdrop-filter: blur(10px); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); text-align: center; transition: 0.3s; }
         .card img { width: 100%; height: 220px; object-fit: cover; }
         .card:hover { transform: translateY(-5px); border-color: var(--gold); }
@@ -131,51 +135,51 @@
     </div>
 
     <script>
-        // قاعدة بيانات المنتجات مع الصور المخصصة
+        // عقل الموقع: كل نوع وصورته الخاصة
         const data = {
             shrimp: {
                 title: "الجمبري والكابوريا",
                 items: [
-                    { name: "جمبري جامبو كبير", img: "shrimp.png.jpeg" },
-                    { name: "جمبري جامبو وسط", img: "shrimp.png.jpeg" },
-                    { name: "جمبري أبيض", img: "shrimp.png.jpeg" },
-                    { name: "جمبري قزازي", img: "shrimp.png.jpeg" },
-                    { name: "جمبري سركوس", img: "shrimp.png.jpeg" },
-                    { name: "كابوريا نتاية", img: "shrimp.png.jpeg" },
-                    { name: "كابوريا ذكر", img: "shrimp.png.jpeg" }
+                    { name: "جمبري جامبو كبير", img: "jumbo_large.jpg" },
+                    { name: "جمبري جامبو وسط", img: "jumbo_mid.jpg" },
+                    { name: "جمبري أبيض", img: "white_shrimp.jpg" },
+                    { name: "جمبري قزازي", img: "shrimp_gzazi.jpg" },
+                    { name: "جمبري سركوس", img: "sarkos.jpg" },
+                    { name: "كابوريا نتاية", img: "crab_female.jpg" },
+                    { name: "كابوريا ذكر", img: "crab_male.jpg" }
                 ]
             },
             nile: {
                 title: "أسماك النيل",
                 items: [
-                    { name: "بلطي كبير", img: "tilapia.png.jpeg" },
-                    { name: "بلطي وسط", img: "tilapia.png.jpeg" },
-                    { name: "بوري", img: "tilapia.png.jpeg" },
-                    { name: "طوبار", img: "tilapia.png.jpeg" },
-                    { name: "جمبري نيل", img: "tilapia.png.jpeg" }
+                    { name: "بلطي كبير", img: "bolti_big.jpg" },
+                    { name: "بلطي وسط", img: "bolti_mid.jpg" },
+                    { name: "بوري", img: "bouri.jpg" },
+                    { name: "طوبار", img: "tobar.jpg" },
+                    { name: "جمبري نيل", img: "nile_shrimp.jpg" }
                 ]
             },
             sea: {
                 title: "سمك البحر",
                 items: [
-                    { name: "سمك شك", img: "sea-fish.png.jpeg" },
-                    { name: "سمك باغه", img: "sea-fish.png.jpeg" },
-                    { name: "مرجان", img: "sea-fish.png.jpeg" },
-                    { name: "سردين", img: "sea-fish.png.jpeg" },
-                    { name: "بساريه", img: "sea-fish.png.jpeg" }
+                    { name: "سمك شك", img: "shak.jpg" },
+                    { name: "سمك باغه", img: "bagha.jpg" },
+                    { name: "مرجان", img: "morgan.jpg" },
+                    { name: "سردين", img: "sardin.jpg" },
+                    { name: "بساريه", img: "basaria.jpg" }
                 ]
             },
             platters: {
                 title: "الصواني والولائم",
                 items: [
-                    { name: "صينية عزومة ملكية", img: "platters.png.jpeg" },
-                    { name: "تشكيلة رويال فسفور", img: "platters.png.jpeg" },
-                    { name: "صينية السعادة مشكل", img: "platters.png.jpeg" }
+                    { name: "صينية عزومة ملكية", img: "platter_1.jpg" },
+                    { name: "تشكيلة رويال فسفور", img: "platter_2.jpg" },
+                    { name: "صينية السعادة مشكل", img: "platter_3.jpg" }
                 ]
             }
         };
 
-        // الذاكرة الدائمة: جلب البيانات المخزنة برقم الهاتف
+        // الذاكرة الدائمة
         let cart = JSON.parse(localStorage.getItem('royalCart')) || [];
         let favorites = JSON.parse(localStorage.getItem('royalFav')) || [];
 
@@ -198,10 +202,10 @@
                 data[pageId].items.forEach(item => {
                     grid.innerHTML += `
                         <div class="card">
-                            <img src="${item.img}">
+                            <img src="${item.img}" onerror="this.src='main-logo.png.PNG'">
                             <div class="card-body">
                                 <h3>${item.name}</h3>
-                                <select id="clean-${item.name}"><option>سنجاري</option><option>قشر وبطن</option><option>بدون تنظيف</option></select>
+                                <select id="clean-${item.name}"><option>سنجاري</option><option>قشر وبطن</option><option>بدون تنظيف</option><option>فيليه (مخلي)</option></select>
                                 <button class="btn-buy" onclick="addToCart('${item.name}')">إضافة للسلة</button>
                                 <button style="background:none; border:none; color:#ff4757; cursor:pointer;" onclick="addToFav('${item.name}')"><i class="fas fa-heart"></i> للمفضلة</button>
                             </div>
@@ -216,7 +220,7 @@
             cart.push({ name, cleaning });
             saveToStorage();
             updateBadges();
-            alert(`تم إضافة ${name} إلى سلتك`);
+            alert(`تم إضافة ${name} لسلتك`);
         }
 
         function addToFav(name) {
@@ -224,6 +228,7 @@
                 favorites.push(name);
                 saveToStorage();
                 updateBadges();
+                alert(`تم إضافة ${name} للمفضلة`);
             }
         }
 
@@ -266,13 +271,13 @@
                 localStorage.setItem('royalName', name); 
                 localStorage.setItem('royalPhone', phone); 
                 location.reload(); 
-            }
+            } else { alert("من فضلك ادخل بياناتك"); }
         }
 
         function sendOrder() {
             const name = localStorage.getItem('royalName') || "عميل جديد";
             const phone = localStorage.getItem('royalPhone') || "";
-            if(!localStorage.getItem('royalPhone')) { alert("يرجى تسجيل الدخول أولاً لإرسال الطلب"); openModal('loginModal'); return; }
+            if(!localStorage.getItem('royalPhone')) { alert("سجل دخولك أولاً لإتمام الطلب"); openModal('loginModal'); return; }
             
             let text = `طلب جديد من رويال فيش 👑\nالاسم: ${name}\nالهاتف: ${phone}\n\nالطلبات:\n`;
             cart.forEach(item => text += `- ${item.name} (تجهيز: ${item.cleaning})\n`);
@@ -283,7 +288,7 @@
             const name = localStorage.getItem('royalName');
             if(name) {
                 document.getElementById('userWelcome').innerText = "أهلاً، " + name;
-                document.getElementById('loginMenuItem').innerText = "خروج (تبديل الحساب)";
+                document.getElementById('loginMenuItem').innerText = "خروج / تبديل الحساب";
                 document.getElementById('loginMenuItem').onclick = () => { localStorage.clear(); location.reload(); };
             }
             updateBadges();
