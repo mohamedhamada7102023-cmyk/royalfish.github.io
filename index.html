@@ -11,8 +11,8 @@
         body, html { 
             margin: 0; padding: 0; width: 100%; min-height: 100%; 
             font-family: 'Cairo', sans-serif; background-color: var(--dark);
-            /* الصورة كخلفية ثابتة */
-            background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('image_4700b7.jpg');
+            /* الصورة كخلفية ثابتة للموقع */
+            background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('main-logo.png.PNG');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -27,10 +27,13 @@
             width: 85%;
             max-width: 600px;
             height: auto;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.9);
             border: 2px solid var(--gold);
+            transition: transform 0.3s ease;
         }
+
+        .brand-header-img:hover { transform: scale(1.02); }
 
         .section-title { 
             font-size: clamp(1.8rem, 5vw, 2.5rem); 
@@ -43,30 +46,40 @@
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
             gap: 20px; max-width: 1100px; margin: 0 auto; padding: 20px;
+            padding-bottom: 60px;
         }
 
         .category-link { text-decoration: none; color: inherit; }
 
         .card {
             background: rgba(255, 255, 255, 0.08); 
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: 0.3s;
             text-align: center;
         }
 
-        .card:hover { transform: translateY(-5px); border-color: var(--gold); }
-        .card img { width: 100%; height: 250px; object-fit: cover; }
-        .card h3 { margin: 15px; font-size: 1.5rem; }
+        .card:hover { 
+            transform: translateY(-10px); 
+            border-color: var(--gold); 
+            background: rgba(212, 175, 55, 0.1); 
+        }
 
+        .card img { width: 100%; height: 260px; object-fit: cover; }
+        .card h3 { margin: 15px; font-size: 1.5rem; text-shadow: 1px 1px 5px #000; }
+
+        @media (max-width: 480px) {
+            .brand-header-img { width: 95%; }
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <img src="image_4700b7.jpg" alt="Royal Fish" class="brand-header-img">
+        <img src="main-logo.png.PNG" alt="Royal Fish" class="brand-header-img">
     </header>
 
     <h2 class="section-title">قائمة الملوك</h2>
