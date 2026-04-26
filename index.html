@@ -17,17 +17,16 @@
             color: white; overflow-x: hidden; scroll-behavior: smooth;
         }
 
-        /* شريط التنقل */
+        /* Navbar */
         .navbar {
             display: flex; justify-content: space-between; align-items: center;
             padding: 15px 20px; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
             position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--gold);
         }
-
-        .menu-btn, .nav-icons i { font-size: 1.4rem; color: var(--gold); cursor: pointer; transition: 0.3s; }
+        .menu-btn, .nav-icons i { font-size: 1.4rem; color: var(--gold); cursor: pointer; }
         .badge { background: #ff4757; color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 50%; position: relative; top: -10px; right: 5px; }
 
-        /* القائمة الجانبية */
+        /* Sidebar */
         .sidebar {
             position: fixed; top: 0; right: -300px; width: 280px; height: 100%;
             background: rgba(0, 0, 0, 0.95); z-index: 2000; transition: 0.4s; padding: 20px;
@@ -36,31 +35,42 @@
         .sidebar.active { right: 0; }
         .sidebar h2 { color: var(--gold); border-bottom: 1px solid var(--glass); padding-bottom: 10px; }
         .sidebar-menu { list-style: none; padding: 0; }
-        .sidebar-menu li { padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
-        .sidebar-menu li:hover { color: var(--gold); }
+        .sidebar-menu li { padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.3s; }
+        .sidebar-menu li:hover { color: var(--gold); padding-right: 10px; }
 
-        /* الواجهة */
+        /* Login Modal */
+        .login-modal {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.95); padding: 30px; border-radius: 20px;
+            border: 2px solid var(--gold); z-index: 3000; width: 90%; max-width: 400px;
+            display: none; text-align: center; backdrop-filter: blur(20px);
+        }
+        .login-modal.active { display: block; }
+        .login-input {
+            width: 100%; padding: 12px; margin: 10px 0;
+            background: #1a1a1a; border: 1px solid var(--gold);
+            color: white; border-radius: 8px; text-align: center; font-size: 1rem;
+        }
+        .login-btn { background: var(--gold); color: black; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; }
+
+        /* Layout */
         header { text-align: center; padding: 40px 10px; }
-        .brand-img { width: 90%; max-width: 500px; border-radius: 15px; border: 1px solid var(--gold); box-shadow: 0 0 30px rgba(0,0,0,0.5); }
-
+        .brand-img { width: 90%; max-width: 500px; border-radius: 15px; border: 1px solid var(--gold); }
         .container { max-width: 1200px; margin: auto; padding: 20px; }
         .section-title { text-align: center; color: var(--gold); font-size: 2rem; margin-bottom: 30px; }
 
-        /* الكروت */
+        /* Cards */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
         .card { 
             background: var(--glass); backdrop-filter: blur(10px); border-radius: 20px; 
             overflow: hidden; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s;
-            position: relative;
+            text-align: center; cursor: pointer;
         }
         .card:hover { transform: translateY(-10px); border-color: var(--gold); }
         .card img { width: 100%; height: 250px; object-fit: cover; }
-        .card-body { padding: 15px; text-align: center; }
+        .card-body { padding: 15px; }
         
-        .fresh-tag { position: absolute; top: 10px; left: 10px; background: #2ed573; padding: 3px 10px; border-radius: 5px; font-size: 0.8rem; }
-
         select { width: 100%; padding: 8px; margin: 10px 0; background: #1a1a1a; color: white; border: 1px solid var(--gold); border-radius: 5px; }
-
         .btn-group { display: flex; gap: 10px; margin-top: 10px; }
         .btn-buy { flex: 3; background: var(--gold); color: black; border: none; padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer; }
         .btn-fav { flex: 1; background: none; border: 1px solid #ff4757; color: #ff4757; border-radius: 5px; cursor: pointer; }
@@ -68,41 +78,51 @@
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1500; display: none; }
         .overlay.active { display: block; }
 
-        /* لإخفاء وإظهار الأقسام */
         .page { display: none; }
         .page.active { display: block; }
     </style>
 </head>
 <body>
 
-    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+    <div class="overlay" id="overlay" onclick="closeAll()"></div>
+
+    <div class="login-modal" id="loginModal">
+        <h2 style="color:var(--gold)">تسجيل دخول ملكي</h2>
+        <input type="text" id="userName" class="login-input" placeholder="الاسم الكريم">
+        <input type="tel" id="userPhone" class="login-input" placeholder="رقم الهاتف">
+        <button class="login-btn" onclick="saveLogin()">دخول</button>
+        <button onclick="closeLogin()" style="background:none; border:none; color:gray; margin-top:10px; cursor:pointer;">إغلاق</button>
+    </div>
 
     <nav class="navbar">
         <i class="fas fa-bars menu-btn" onclick="toggleSidebar()"></i>
-        <div onclick="showPage('home')" style="cursor:pointer; font-weight:900; color:var(--gold); font-size:1.5rem;">ROYAL FISH</div>
+        <div onclick="showPage('home')" style="cursor:pointer; font-weight:900; color:var(--gold); font-size:1.4rem;">ROYAL FISH</div>
         <div class="nav-icons">
-            <i class="fas fa-heart"><span class="badge">0</span></i>
-            <i class="fas fa-shopping-cart" style="margin-right:15px;"><span class="badge">0</span></i>
+            <i class="fas fa-heart"><span class="badge" id="fav-badge">0</span></i>
+            <i class="fas fa-shopping-cart" style="margin-right:15px;"><span class="badge" id="cart-badge">0</span></i>
         </div>
     </nav>
 
     <div class="sidebar" id="sidebar">
-        <h2>القائمة الملكية</h2>
+        <h2 id="userWelcome">القائمة</h2>
         <ul class="sidebar-menu">
             <li onclick="showPage('home')"><i class="fas fa-home"></i> الرئيسية</li>
-            <li onclick="showPage('shrimp')"><i class="fas fa-fish"></i> الجمبري والكابوريا</li>
-            <li onclick="showPage('nile')"><i class="fas fa-water"></i> أسماك النيل</li>
-            <li onclick="showPage('sea')"><i class="fas fa-anchor"></i> سمك البحر</li>
-            <li onclick="showPage('platters')"><i class="fas fa-utensils"></i> الصواني والولائم</li>
+            <li id="loginMenuItem" onclick="openLogin()"><i class="fas fa-user"></i> تسجيل الدخول</li>
             <hr style="border:0.1px solid var(--glass)">
-            <li><i class="fas fa-user"></i> تسجيل الدخول</li>
+            <li onclick="showPage('shrimp')">الجمبري والكابوريا</li>
+            <li onclick="showPage('nile')">أسماك النيل</li>
+            <li onclick="showPage('sea')">سمك البحر</li>
+            <li onclick="showPage('platters')">الصواني والولائم</li>
+            <hr style="border:0.1px solid var(--glass)">
+            <li><i class="fas fa-heart"></i> المفضلة</li>
+            <li><i class="fas fa-shopping-basket"></i> سلة المشتريات</li>
         </ul>
     </div>
 
     <div id="home" class="page active">
         <header><img src="main-logo.png.PNG" class="brand-img"></header>
         <div class="container">
-            <h2 class="section-title">اختر فئتك</h2>
+            <h2 class="section-title">قائمة الملوك</h2>
             <div class="grid">
                 <div class="card" onclick="showPage('shrimp')"><img src="shrimp.png.jpeg"><h3>الجمبري والكابوريا</h3></div>
                 <div class="card" onclick="showPage('nile')"><img src="tilapia.png.jpeg"><h3>أسماك النيل</h3></div>
@@ -122,9 +142,9 @@
 
     <script>
         const data = {
-            shrimp: { title: "قسم الجمبري والكابوريا", img: "shrimp.png.jpeg", items: ["جمبري جامبو كبير", "جمبري جامبو وسط", "جمبري أبيض", "جمبري قزازي", "جمبري سركوس", "كابوريا نتاية", "كابوريا ذكر"] },
-            nile: { title: "أسماك النيل الطازجة", img: "tilapia.png.jpeg", items: ["بلطي كبير", "بلطي وسط", "بوري", "طوبار", "جمبري نيل"] },
-            sea: { title: "كنوز البحر المتوسط", img: "sea-fish.png.jpeg", items: ["سمك شك", "سمك باغه", "مرجان", "سردين", "بساريه"] },
+            shrimp: { title: "الجمبري والكابوريا", img: "shrimp.png.jpeg", items: ["جمبري جامبو كبير", "جمبري جامبو وسط", "جمبري أبيض", "جمبري قزازي", "جمبري سركوس", "كابوريا نتاية", "كابوريا ذكر"] },
+            nile: { title: "أسماك النيل", img: "tilapia.png.jpeg", items: ["بلطي كبير", "بلطي وسط", "بوري", "طوبار", "جمبري نيل"] },
+            sea: { title: "سمك البحر", img: "sea-fish.png.jpeg", items: ["سمك شك", "سمك باغه", "مرجان", "سردين", "بساريه"] },
             platters: { title: "الصواني والولائم", img: "platters.png.jpeg", items: ["صينية عزومة ملكية", "تشكيلة رويال فسفور", "صينية السعادة مشكل"] }
         };
 
@@ -133,42 +153,67 @@
             document.getElementById('overlay').classList.toggle('active');
         }
 
+        function closeAll() {
+            document.getElementById('sidebar').classList.remove('active');
+            document.getElementById('loginModal').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+
+        function openLogin() { closeAll(); document.getElementById('loginModal').classList.add('active'); document.getElementById('overlay').classList.add('active'); }
+        function closeLogin() { closeAll(); }
+
+        function saveLogin() {
+            const name = document.getElementById('userName').value;
+            const phone = document.getElementById('userPhone').value;
+            if(name && phone) {
+                localStorage.setItem('royalName', name);
+                localStorage.setItem('royalPhone', phone);
+                updateUI();
+                closeLogin();
+            } else { alert("برجاء إدخال البيانات"); }
+        }
+
+        function updateUI() {
+            const name = localStorage.getItem('royalName');
+            if(name) {
+                document.getElementById('userWelcome').innerText = "أهلاً، " + name;
+                document.getElementById('loginMenuItem').innerHTML = '<i class="fas fa-sign-out-alt"></i> خروج';
+                document.getElementById('loginMenuItem').onclick = () => { localStorage.clear(); location.reload(); };
+            }
+        }
+
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            toggleSidebar(); // إغلاق القائمة عند الاختيار
+            closeAll();
             window.scrollTo(0,0);
-
             if (data[pageId]) {
-                const page = data[pageId];
-                document.getElementById('cat-title').innerText = page.title;
-                const grid = document.getElementById('product-grid');
-                grid.innerHTML = "";
-                
-                page.items.forEach(item => {
-                    grid.innerHTML += `
-                        <div class="card">
-                            <span class="fresh-tag">طازج اليوم</span>
-                            <img src="${page.img}">
+                const p = data[pageId];
+                document.getElementById('cat-title').innerText = p.title;
+                const g = document.getElementById('product-grid');
+                g.innerHTML = "";
+                p.items.forEach(item => {
+                    g.innerHTML += `
+                        <div class="card" style="cursor:default">
+                            <img src="${p.img}">
                             <div class="card-body">
                                 <h3>${item}</h3>
-                                <select>
-                                    <option>تنظيف (سنجاري)</option>
-                                    <option>تنظيف (قشر وبطن)</option>
-                                    <option>بدون تنظيف</option>
-                                    <option>مخلي (فيليه)</option>
-                                </select>
+                                <select><option>تنظيف (سنجاري)</option><option>تنظيف (قشر وبطن)</option><option>بدون تنظيف</option><option>مخلي (فيليه)</option></select>
                                 <div class="btn-group">
-                                    <button class="btn-buy" onclick="alert('تمت الإضافة للسلة')">إضافة للسلة</button>
-                                    <button class="btn-fav"><i class="fas fa-heart"></i></button>
+                                    <button class="btn-buy" onclick="addToCart()">إضافة للسلة</button>
+                                    <button class="btn-fav" onclick="addToFav()"><i class="fas fa-heart"></i></button>
                                 </div>
                             </div>
                         </div>`;
                 });
                 document.getElementById('category-page').classList.add('active');
-            } else {
-                document.getElementById(pageId).classList.add('active');
-            }
+            } else { document.getElementById(pageId).classList.add('active'); }
         }
+
+        let cart = 0; let fav = 0;
+        function addToCart() { cart++; document.getElementById('cart-badge').innerText = cart; }
+        function addToFav() { fav++; document.getElementById('fav-badge').innerText = fav; }
+
+        window.onload = updateUI;
     </script>
 </body>
 </html>
