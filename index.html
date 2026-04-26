@@ -33,12 +33,11 @@
         .sidebar-menu { list-style: none; padding: 0; }
         .sidebar-menu li { padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
 
-        /* نوافذ السلة والمفضلة */
         .modal {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             background: rgba(0,0,0,0.98); padding: 25px; border-radius: 20px;
             border: 2px solid var(--gold); z-index: 3000; width: 95%; max-width: 500px;
-            display: none; max-height: 80vh; overflow-y: auto;
+            display: none; max-height: 80vh; overflow-y: auto; box-shadow: 0 0 50px rgba(212,175,55,0.3);
         }
         .modal.active { display: block; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--gold); padding-bottom: 10px; margin-bottom: 15px; }
@@ -52,8 +51,9 @@
         .section-title { text-align: center; color: var(--gold); font-size: 2rem; margin-bottom: 30px; }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .card { background: var(--glass); backdrop-filter: blur(10px); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
+        .card { background: var(--glass); backdrop-filter: blur(10px); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); text-align: center; transition: 0.3s; }
         .card img { width: 100%; height: 220px; object-fit: cover; }
+        .card:hover { transform: translateY(-5px); border-color: var(--gold); }
         .card-body { padding: 15px; }
 
         select { width: 100%; padding: 8px; margin: 10px 0; background: #1a1a1a; color: white; border: 1px solid var(--gold); border-radius: 5px; }
@@ -71,23 +71,23 @@
     <div class="overlay" id="overlay" onclick="closeAll()"></div>
 
     <div class="modal" id="cartModal">
-        <div class="modal-header"><h3>🛒 سلة المشتريات</h3><i class="fas fa-times" onclick="closeAll()"></i></div>
+        <div class="modal-header"><h3>🛒 السلة الملكية</h3><i class="fas fa-times" onclick="closeAll()" style="cursor:pointer"></i></div>
         <div id="cartContent">السلة فارغة حالياً..</div>
         <div id="cartFooter" style="display:none; margin-top:20px;">
-            <button class="btn-whatsapp" onclick="sendOrder()">إرسال الطلب عبر واتساب <i class="fab fa-whatsapp"></i></button>
+            <button class="btn-whatsapp" onclick="sendOrder()">تأكيد الطلب عبر واتساب <i class="fab fa-whatsapp"></i></button>
         </div>
     </div>
 
     <div class="modal" id="favModal">
-        <div class="modal-header"><h3>❤️ المفضلة</h3><i class="fas fa-times" onclick="closeAll()"></i></div>
-        <div id="favContent">لم تضف أي منتجات للمفضلة بعد..</div>
+        <div class="modal-header"><h3>❤️ المفضلة</h3><i class="fas fa-times" onclick="closeAll()" style="cursor:pointer"></i></div>
+        <div id="favContent">قائمة المفضلة فارغة..</div>
     </div>
 
     <div class="modal" id="loginModal">
         <h2 style="color:var(--gold)">تسجيل دخول</h2>
-        <input type="text" id="userName" style="width:100%; padding:12px; margin:10px 0;" placeholder="الاسم">
+        <input type="text" id="userName" style="width:100%; padding:12px; margin:10px 0;" placeholder="الاسم الكريم">
         <input type="tel" id="userPhone" style="width:100%; padding:12px; margin:10px 0;" placeholder="رقم الهاتف">
-        <button class="btn-buy" onclick="saveLogin()">دخول</button>
+        <button class="btn-buy" onclick="saveLogin()">دخول ملكي</button>
     </div>
 
     <nav class="navbar">
@@ -124,28 +124,69 @@
 
     <div id="category-page" class="page">
         <div class="container">
-            <button onclick="showPage('home')" style="color:var(--gold); background:none; border:1px solid var(--gold); padding:5px 15px; cursor:pointer;">← عودة</button>
+            <button onclick="showPage('home')" style="color:var(--gold); background:none; border:1px solid var(--gold); padding:5px 15px; cursor:pointer; border-radius:5px">← عودة</button>
             <h2 id="cat-title" class="section-title"></h2>
             <div id="product-grid" class="grid"></div>
         </div>
     </div>
 
     <script>
+        // قاعدة بيانات المنتجات مع الصور المخصصة
         const data = {
-            shrimp: { title: "الجمبري والكابوريا", items: ["جمبري جامبو كبير", "جمبري جامبو وسط", "جمبري أبيض", "جمبري قزازي", "جمبري سركوس", "كابوريا نتاية", "كابوريا ذكر"] },
-            nile: { title: "أسماك النيل", items: ["بلطي كبير", "بلطي وسط", "بوري", "طوبار", "جمبري نيل"] },
-            sea: { title: "سمك البحر", items: ["سمك شك", "سمك باغه", "مرجان", "سردين", "بساريه"] },
-            platters: { title: "الصواني والولائم", items: ["صينية عزومة ملكية", "تشكيلة رويال فسفور", "صينية السعادة مشكل"] }
+            shrimp: {
+                title: "الجمبري والكابوريا",
+                items: [
+                    { name: "جمبري جامبو كبير", img: "shrimp.png.jpeg" },
+                    { name: "جمبري جامبو وسط", img: "shrimp.png.jpeg" },
+                    { name: "جمبري أبيض", img: "shrimp.png.jpeg" },
+                    { name: "جمبري قزازي", img: "shrimp.png.jpeg" },
+                    { name: "جمبري سركوس", img: "shrimp.png.jpeg" },
+                    { name: "كابوريا نتاية", img: "shrimp.png.jpeg" },
+                    { name: "كابوريا ذكر", img: "shrimp.png.jpeg" }
+                ]
+            },
+            nile: {
+                title: "أسماك النيل",
+                items: [
+                    { name: "بلطي كبير", img: "tilapia.png.jpeg" },
+                    { name: "بلطي وسط", img: "tilapia.png.jpeg" },
+                    { name: "بوري", img: "tilapia.png.jpeg" },
+                    { name: "طوبار", img: "tilapia.png.jpeg" },
+                    { name: "جمبري نيل", img: "tilapia.png.jpeg" }
+                ]
+            },
+            sea: {
+                title: "سمك البحر",
+                items: [
+                    { name: "سمك شك", img: "sea-fish.png.jpeg" },
+                    { name: "سمك باغه", img: "sea-fish.png.jpeg" },
+                    { name: "مرجان", img: "sea-fish.png.jpeg" },
+                    { name: "سردين", img: "sea-fish.png.jpeg" },
+                    { name: "بساريه", img: "sea-fish.png.jpeg" }
+                ]
+            },
+            platters: {
+                title: "الصواني والولائم",
+                items: [
+                    { name: "صينية عزومة ملكية", img: "platters.png.jpeg" },
+                    { name: "تشكيلة رويال فسفور", img: "platters.png.jpeg" },
+                    { name: "صينية السعادة مشكل", img: "platters.png.jpeg" }
+                ]
+            }
         };
 
-        let cart = [];
-        let favorites = [];
+        // الذاكرة الدائمة: جلب البيانات المخزنة برقم الهاتف
+        let cart = JSON.parse(localStorage.getItem('royalCart')) || [];
+        let favorites = JSON.parse(localStorage.getItem('royalFav')) || [];
+
+        function saveToStorage() {
+            localStorage.setItem('royalCart', JSON.stringify(cart));
+            localStorage.setItem('royalFav', JSON.stringify(favorites));
+        }
 
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
         function openModal(id) { closeAll(); document.getElementById(id).classList.add('active'); document.getElementById('overlay').classList.add('active'); renderCart(); renderFav(); }
-        function closeAll() { 
-            document.querySelectorAll('.modal, .sidebar, .overlay').forEach(el => el.classList.remove('active')); 
-        }
+        function closeAll() { document.querySelectorAll('.modal, .sidebar, .overlay').forEach(el => el.classList.remove('active')); }
 
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -157,11 +198,12 @@
                 data[pageId].items.forEach(item => {
                     grid.innerHTML += `
                         <div class="card">
+                            <img src="${item.img}">
                             <div class="card-body">
-                                <h3>${item}</h3>
-                                <select id="clean-${item}"><option>سنجاري</option><option>قشر وبطن</option><option>بدون تنظيف</option></select>
-                                <button class="btn-buy" onclick="addToCart('${item}')">إضافة للسلة</button>
-                                <button style="background:none; border:none; color:#ff4757; cursor:pointer;" onclick="addToFav('${item}')"><i class="fas fa-heart"></i> للمفضلة</button>
+                                <h3>${item.name}</h3>
+                                <select id="clean-${item.name}"><option>سنجاري</option><option>قشر وبطن</option><option>بدون تنظيف</option></select>
+                                <button class="btn-buy" onclick="addToCart('${item.name}')">إضافة للسلة</button>
+                                <button style="background:none; border:none; color:#ff4757; cursor:pointer;" onclick="addToFav('${item.name}')"><i class="fas fa-heart"></i> للمفضلة</button>
                             </div>
                         </div>`;
                 });
@@ -172,13 +214,17 @@
         function addToCart(name) {
             const cleaning = document.getElementById(`clean-${name}`).value;
             cart.push({ name, cleaning });
+            saveToStorage();
             updateBadges();
-            alert(`تم إضافة ${name} للسلة`);
+            alert(`تم إضافة ${name} إلى سلتك`);
         }
 
         function addToFav(name) {
-            if(!favorites.includes(name)) favorites.push(name);
-            updateBadges();
+            if(!favorites.includes(name)) {
+                favorites.push(name);
+                saveToStorage();
+                updateBadges();
+            }
         }
 
         function updateBadges() {
@@ -188,35 +234,48 @@
 
         function renderCart() {
             const con = document.getElementById('cartContent');
-            if(cart.length === 0) { con.innerHTML = "السلة فارغة"; document.getElementById('cartFooter').style.display="none"; return; }
+            if(cart.length === 0) { con.innerHTML = "السلة فارغة حالياً.."; document.getElementById('cartFooter').style.display="none"; return; }
             document.getElementById('cartFooter').style.display="block";
             con.innerHTML = cart.map((item, index) => `
                 <div class="cart-item">
                     <span>${item.name} (${item.cleaning})</span>
-                    <button onclick="removeFromCart(${index})">حذف</button>
+                    <button onclick="removeFromCart(${index})"><i class="fas fa-trash"></i></button>
                 </div>
             `).join('');
         }
 
-        function removeFromCart(index) { cart.splice(index, 1); updateBadges(); renderCart(); }
+        function removeFromCart(index) { cart.splice(index, 1); saveToStorage(); updateBadges(); renderCart(); }
 
         function renderFav() {
             const con = document.getElementById('favContent');
-            if(favorites.length === 0) { con.innerHTML = "لا يوجد مفضلة"; return; }
-            con.innerHTML = favorites.map(item => `<div class="cart-item"><span>${item}</span></div>`).join('');
+            if(favorites.length === 0) { con.innerHTML = "قائمة المفضلة فارغة.."; return; }
+            con.innerHTML = favorites.map((item, index) => `
+                <div class="cart-item">
+                    <span>${item}</span>
+                    <button onclick="removeFromFav(${index})"><i class="fas fa-trash"></i></button>
+                </div>
+            `).join('');
         }
+
+        function removeFromFav(index) { favorites.splice(index, 1); saveToStorage(); updateBadges(); renderFav(); }
 
         function saveLogin() {
             const name = document.getElementById('userName').value;
             const phone = document.getElementById('userPhone').value;
-            if(name && phone) { localStorage.setItem('royalName', name); localStorage.setItem('royalPhone', phone); location.reload(); }
+            if(name && phone) { 
+                localStorage.setItem('royalName', name); 
+                localStorage.setItem('royalPhone', phone); 
+                location.reload(); 
+            }
         }
 
         function sendOrder() {
             const name = localStorage.getItem('royalName') || "عميل جديد";
             const phone = localStorage.getItem('royalPhone') || "";
+            if(!localStorage.getItem('royalPhone')) { alert("يرجى تسجيل الدخول أولاً لإرسال الطلب"); openModal('loginModal'); return; }
+            
             let text = `طلب جديد من رويال فيش 👑\nالاسم: ${name}\nالهاتف: ${phone}\n\nالطلبات:\n`;
-            cart.forEach(item => text += `- ${item.name} (تنظيف: ${item.cleaning})\n`);
+            cart.forEach(item => text += `- ${item.name} (تجهيز: ${item.cleaning})\n`);
             window.open(`https://wa.me/201006407185?text=${encodeURIComponent(text)}`);
         }
 
@@ -224,9 +283,10 @@
             const name = localStorage.getItem('royalName');
             if(name) {
                 document.getElementById('userWelcome').innerText = "أهلاً، " + name;
-                document.getElementById('loginMenuItem').innerText = "تسجيل الخروج";
+                document.getElementById('loginMenuItem').innerText = "خروج (تبديل الحساب)";
                 document.getElementById('loginMenuItem').onclick = () => { localStorage.clear(); location.reload(); };
             }
+            updateBadges();
         };
     </script>
 </body>
