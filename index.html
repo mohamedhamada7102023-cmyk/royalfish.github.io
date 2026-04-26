@@ -6,71 +6,128 @@
     <title>رويال فيش | طعم الملوك</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --blue: #001a35; --gold: #d4af37; --white: #ffffff; }
-        body { font-family: 'Cairo', sans-serif; margin: 0; background: #f4f4f4; color: var(--blue); }
-        header { background: var(--blue); padding: 40px 20px; text-align: center; border-bottom: 5px solid var(--gold); }
-        .logo-img { max-width: 400px; width: 100%; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5)); }
-        .container { max-width: 1200px; margin: auto; padding: 40px 20px; }
-        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 40px; color: var(--blue); }
-        .categories { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
-        
-        /* جعل الكارت بالكامل قابل للضغط */
-        .category-link { text-decoration: none; color: inherit; display: block; }
-        
-        .card { background: var(--white); border-radius: 15px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.1); transition: 0.3s; border: 1px solid #eee; text-align: center; height: 100%; }
-        .card:hover { transform: translateY(-10px); border-color: var(--gold); box-shadow: 0 15px 30px rgba(212, 175, 55, 0.2); }
-        .card img { width: 100%; height: 250px; object-fit: cover; border-bottom: 3px solid var(--gold); }
-        .card h3 { margin: 15px 0; font-size: 1.5rem; }
-        
-        .cta-box { text-align: center; margin-top: 60px; background: var(--blue); padding: 40px; border-radius: 20px; color: white; border: 2px solid var(--gold); }
-        .whatsapp-btn { background: var(--gold); color: var(--blue); padding: 15px 40px; text-decoration: none; font-weight: bold; border-radius: 50px; font-size: 1.2rem; display: inline-block; transition: 0.3s; }
-        .whatsapp-btn:hover { background: white; transform: scale(1.1); }
+        :root { --gold: #d4af37; --white: #ffffff; }
+        body, html { margin: 0; padding: 0; width: 100%; min-height: 100%; font-family: 'Cairo', sans-serif; overflow-x: hidden; background-color: #000; }
+
+        /* حاوية الفيديو الخلفية */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        #bg-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(40%); /* تعتيم الفيديو لبروز اللوجو والكلام */
+        }
+
+        .content-overlay {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding-bottom: 50px;
+        }
+
+        /* تنسيق اللوجو الجديد */
+        .logo-full {
+            max-width: 600px;
+            width: 90%;
+            margin-top: 20px;
+            filter: drop-shadow(0 0 20px rgba(0,0,0,0.8));
+        }
+
+        .section-title { 
+            font-size: clamp(1.8rem, 5vw, 3rem); 
+            color: var(--gold); 
+            margin: 40px 0; 
+            text-shadow: 2px 2px 10px rgba(0,0,0,1); 
+        }
+
+        .categories { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 30px; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 0 20px;
+        }
+
+        .category-link { text-decoration: none; color: inherit; }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 25px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: 0.5s;
+            text-align: center;
+            color: white;
+        }
+
+        .card:hover { 
+            transform: scale(1.05); 
+            border-color: var(--gold); 
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .card img { width: 100%; height: 300px; object-fit: cover; }
+        .card h3 { margin: 20px; font-size: 1.8rem; text-shadow: 2px 2px 5px black; }
+
+        @media (max-width: 600px) {
+            .logo-full { max-width: 350px; }
+        }
     </style>
 </head>
 <body>
 
-<header>
-    <img src="royal-fish-text.png.png" alt="Royal Fish" class="logo-img">
-</header>
-
-<div class="container">
-    <h2 class="section-title">فئاتنا الملكية</h2>
-    
-    <div class="categories">
-        <a href="shrimp.html" class="category-link">
-            <div class="card">
-                <img src="shrimp.png.jpeg" alt="جمبري ملكي">
-                <h3>قسم الجمبري والفسفور</h3>
-            </div>
-        </a>
-
-        <a href="tilapia.html" class="category-link">
-            <div class="card">
-                <img src="tilapia.png.jpeg" alt="سمك بلطي">
-                <h3>أسماك النيل الطازجة</h3>
-            </div>
-        </a>
-
-        <a href="sea-fish.html" class="category-link">
-            <div class="card">
-                <img src="sea-fish.png.jpeg" alt="سمك بحر">
-                <h3>كنوز البحر المتوسط</h3>
-            </div>
-        </a>
-
-        <a href="platters.html" class="category-link">
-            <div class="card">
-                <img src="platters.png.jpeg" alt="صواني سمك">
-                <h3>الولائم والعزومات</h3>
-            </div>
-        </a>
+    <div class="video-background">
+        <video autoplay muted loop playsinline id="bg-video">
+            <source src="bg-video.mp4.mp4" type="video/mp4">
+        </video>
     </div>
 
-    <div class="cta-box">
-        <h2>هل أنت جاهز لتجربة طعم الملوك؟</h2>
-        <a href="https://wa.me/201006407185" class="whatsapp-btn">اطلب الآن عبر واتساب</a>
+    <div class="content-overlay">
+        <header>
+            <img src="main-logo.png" alt="Royal Fish" class="logo-full">
+        </header>
+
+        <h2 class="section-title">قائمة الملوك</h2>
+        
+        <div class="categories">
+            <a href="shrimp.html" class="category-link">
+                <div class="card">
+                    <img src="shrimp.png.jpeg" alt="جمبري">
+                    <h3>قسم الجمبري</h3>
+                </div>
+            </a>
+            <a href="tilapia.html" class="category-link">
+                <div class="card">
+                    <img src="tilapia.png.jpeg" alt="بلطي">
+                    <h3>أسماك النيل</h3>
+                </div>
+            </a>
+            <a href="sea-fish.html" class="category-link">
+                <div class="card">
+                    <img src="sea-fish.png.jpeg" alt="سمك بحر">
+                    <h3>كنوز البحر</h3>
+                </div>
+            </a>
+            <a href="platters.html" class="category-link">
+                <div class="card">
+                    <img src="platters.png.jpeg" alt="صواني">
+                    <h3>الولائم الملكية</h3>
+                </div>
+            </a>
+        </div>
     </div>
-</div>
 
 </body>
 </html>
