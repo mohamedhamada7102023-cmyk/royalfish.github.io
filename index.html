@@ -30,17 +30,18 @@
         .container { max-width: 1200px; margin: auto; padding: 20px; }
         .section-title { text-align: center; color: var(--gold); font-size: 2rem; margin-bottom: 30px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .card { background: var(--glass); backdrop-filter: blur(10px); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); text-align: center; transition: 0.3s; }
+        .card { background: var(--glass); backdrop-filter: blur(10px); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); text-align: center; transition: 0.3s; cursor: pointer; }
         .card img { width: 100%; height: 220px; object-fit: cover; background: #111; }
         .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--glass); }
         .cart-item button { background: #ff4757; border: none; color: white; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
-        select { width: 100%; padding: 8px; margin: 10px 0; background: #1a1a1a; color: white; border: 1px solid var(--gold); border-radius: 5px; }
+        select, .checkout-input { width: 100%; padding: 10px; margin: 10px 0; background: #1a1a1a; color: white; border: 1px solid var(--gold); border-radius: 5px; font-family: 'Cairo'; }
         .btn-buy { width: 100%; background: var(--gold); color: black; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
         .btn-whatsapp { width: 100%; background: #25d366; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1.1rem; }
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1500; display: none; }
         .overlay.active { display: block; }
         .page { display: none; }
         .page.active { display: block; }
+        .cash-info { background: rgba(212, 175, 55, 0.1); border: 1px dashed var(--gold); padding: 10px; border-radius: 8px; margin-top: 10px; display: none; font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -50,8 +51,19 @@
     <div class="modal" id="cartModal">
         <div class="modal-header"><h3>🛒 السلة الملكية</h3><i class="fas fa-times" onclick="closeAll()"></i></div>
         <div id="cartContent">السلة فارغة..</div>
-        <div id="cartFooter" style="display:none; margin-top:20px;">
-            <button class="btn-whatsapp" onclick="sendOrder()">تأكيد عبر واتساب <i class="fab fa-whatsapp"></i></button>
+        
+        <div id="cartFooter" style="display:none; margin-top:20px; border-top: 1px solid var(--gold); padding-top: 15px;">
+            <h4 style="color:var(--gold)">بيانات التسليم والدفع:</h4>
+            <input type="text" id="custAddress" class="checkout-input" placeholder="العنوان بالتفصيل (كفر الشيخ - بلطيم...)">
+            <select id="paymentMethod" class="checkout-input" onchange="toggleCashInfo()">
+                <option value="cod">الدفع عند الاستلام</option>
+                <option value="cash">تحويل عبر محفظة كاش</option>
+            </select>
+            <div id="cashDetails" class="cash-info">
+                <p>يرجى تحويل المبلغ للرقم: <br> <strong>01006407185</strong></p>
+                <p style="color: #ff4757;">* يرجى إرفاق صورة التحويل في الواتساب.</p>
+            </div>
+            <button class="btn-whatsapp" onclick="sendOrder()">تأكيد وشراء الآن <i class="fab fa-whatsapp"></i></button>
         </div>
     </div>
 
@@ -183,6 +195,11 @@
 
         function updateBadges() { document.getElementById('cart-badge').innerText = cart.length; }
 
+        function toggleCashInfo() {
+            const method = document.getElementById('paymentMethod').value;
+            document.getElementById('cashDetails').style.display = (method === 'cash') ? 'block' : 'none';
+        }
+
         function renderCart() {
             const con = document.getElementById('cartContent');
             if(cart.length === 0) { con.innerHTML = "السلة فارغة"; document.getElementById('cartFooter').style.display="none"; return; }
@@ -206,10 +223,32 @@
         function sendOrder() {
             const name = localStorage.getItem('royalName') || "عميل";
             const phone = localStorage.getItem('royalPhone') || "";
+            const address = document.getElementById('custAddress').value;
+            const payment = document.getElementById('paymentMethod').value;
+
             if(!phone) { openModal('loginModal'); return; }
-            let text = `طلب جديد\nالاسم: ${name}\nالهاتف: ${phone}\n\nالطلبات:\n`;
-            cart.forEach(item => text += `- ${item.name} (${item.cleaning})\n`);
+            if(!address) { alert("من فضلك ادخل العنوان بالتفصيل"); return; }
+
+            let payText = (payment === 'cash') ? "محفظة كاش (01006407185)" : "الدفع عند الاستلام";
+            
+            let text = `👑 *طلب شراء جديد من رويال فيش* 👑\n\n`;
+            text += `👤 *الاسم:* ${name}\n`;
+            text += `📞 *الهاتف:* ${phone}\n`;
+            text += `📍 *العنوان:* ${address}\n`;
+            text += `💰 *طريقة الدفع:* ${payText}\n\n`;
+            text += `📦 *الطلبات:* \n`;
+            
+            cart.forEach((item, index) => {
+                text += `${index + 1}. ${item.name} (${item.cleaning})\n`;
+            });
+
             window.open(`https://wa.me/201006407185?text=${encodeURIComponent(text)}`);
+            
+            // تصفير السلة بعد الإرسال بنجاح
+            cart = [];
+            localStorage.setItem('royalCart', JSON.stringify(cart));
+            updateBadges();
+            closeAll();
         }
 
         window.onload = () => {
