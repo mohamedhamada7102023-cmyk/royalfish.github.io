@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>رويال فيش | طعم الملوك</title>
+    <title>رويال فيش | المتجر الملكي</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -15,28 +15,27 @@
             background-size: cover; background-position: center; background-attachment: fixed;
             color: white; overflow-x: hidden; scroll-behavior: smooth;
         }
+
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--gold); }
-        .menu-btn, .nav-icons i { font-size: 1.4rem; color: var(--gold); cursor: pointer; position: relative; }
+        .nav-icons i { font-size: 1.4rem; color: var(--gold); cursor: pointer; position: relative; }
         .badge { background: #ff4757; color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 50%; position: absolute; top: -10px; right: -10px; }
-        .sidebar { position: fixed; top: 0; right: -300px; width: 280px; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 2000; transition: 0.4s; padding: 20px; border-left: 2px solid var(--gold); }
-        .sidebar.active { right: 0; }
-        .sidebar-menu { list-style: none; padding: 0; }
-        .sidebar-menu li { padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
-        .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.98); padding: 25px; border-radius: 20px; border: 2px solid var(--gold); z-index: 3000; width: 95%; max-width: 500px; display: none; max-height: 80vh; overflow-y: auto; }
+
+        .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.98); padding: 25px; border-radius: 20px; border: 2px solid var(--gold); z-index: 3000; width: 95%; max-width: 500px; display: none; max-height: 85vh; overflow-y: auto; }
         .modal.active { display: block; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--gold); padding-bottom: 10px; margin-bottom: 15px; }
-        header { text-align: center; padding: 40px 10px; }
-        .brand-img { width: 90%; max-width: 500px; border-radius: 15px; border: 1px solid var(--gold); }
-        .container { max-width: 1200px; margin: auto; padding: 20px; }
-        .section-title { text-align: center; color: var(--gold); font-size: 2rem; margin-bottom: 30px; }
+
+        .checkout-input { width: 100%; padding: 12px; margin: 8px 0; background: #111; border: 1px solid var(--gold); color: white; border-radius: 8px; font-family: 'Cairo'; }
+        
+        .cash-info { background: rgba(212, 175, 55, 0.1); border: 1px dashed var(--gold); padding: 10px; border-radius: 8px; margin-top: 10px; display: none; font-size: 0.9rem; }
+
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .card { background: var(--glass); backdrop-filter: blur(10px); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); text-align: center; transition: 0.3s; }
-        .card img { width: 100%; height: 220px; object-fit: cover; background: #111; }
+        .card { background: var(--glass); backdrop-filter: blur(10px); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
+        .card img { width: 100%; height: 220px; object-fit: cover; }
+
+        .btn-buy { width: 100%; background: var(--gold); color: black; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .btn-checkout { background: #25d366; color: white; width: 100%; padding: 15px; border-radius: 10px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 15px; }
+
         .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--glass); }
-        .cart-item button { background: #ff4757; border: none; color: white; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
-        select { width: 100%; padding: 8px; margin: 10px 0; background: #1a1a1a; color: white; border: 1px solid var(--gold); border-radius: 5px; }
-        .btn-buy { width: 100%; background: var(--gold); color: black; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
-        .btn-whatsapp { width: 100%; background: #25d366; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1.1rem; }
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1500; display: none; }
         .overlay.active { display: block; }
         .page { display: none; }
@@ -48,112 +47,68 @@
     <div class="overlay" id="overlay" onclick="closeAll()"></div>
 
     <div class="modal" id="cartModal">
-        <div class="modal-header"><h3>🛒 السلة الملكية</h3><i class="fas fa-times" onclick="closeAll()"></i></div>
+        <div class="modal-header"><h3>🛒 إتمام الطلب الملكي</h3><i class="fas fa-times" onclick="closeAll()" style="cursor:pointer"></i></div>
         <div id="cartContent">السلة فارغة..</div>
-        <div id="cartFooter" style="display:none; margin-top:20px;">
-            <button class="btn-whatsapp" onclick="sendOrder()">تأكيد عبر واتساب <i class="fab fa-whatsapp"></i></button>
+        
+        <div id="checkoutForm" style="display:none; margin-top:20px; border-top: 1px solid var(--gold); padding-top: 15px;">
+            <h4 style="color:var(--gold)">بيانات التسليم والدفع:</h4>
+            <input type="text" id="custName" class="checkout-input" placeholder="الاسم الكامل">
+            <input type="tel" id="custPhone" class="checkout-input" placeholder="رقم الموبايل">
+            <input type="text" id="custAddress" class="checkout-input" placeholder="العنوان بالتفصيل">
+            
+            <select id="paymentMethod" class="checkout-input" onchange="toggleCashInfo()">
+                <option value="cod">الدفع عند الاستلام</option>
+                <option value="cash">تحويل عبر محفظة كاش</option>
+            </select>
+
+            <div id="cashDetails" class="cash-info">
+                <p>يرجى تحويل المبلغ إلى الرقم التالي: <br> <strong style="font-size: 1.2rem;">01006407185</strong></p>
+                <p style="color: #ff4757;">* يرجى إرسال صورة إيصال التحويل في رسالة الواتساب القادمة لتأكيد الطلب.</p>
+            </div>
+
+            <button class="btn-checkout" onclick="executePurchase()">تأكيد وشراء الآن <i class="fab fa-whatsapp"></i></button>
         </div>
     </div>
 
-    <div class="modal" id="loginModal">
-        <h2 style="color:var(--gold)">تسجيل دخول</h2>
-        <input type="text" id="userName" style="width:100%; padding:12px; margin:10px 0;" placeholder="الاسم الكريم">
-        <input type="tel" id="userPhone" style="width:100%; padding:12px; margin:10px 0;" placeholder="رقم الهاتف">
-        <button class="btn-buy" onclick="saveLogin()">دخول ملكي</button>
-    </div>
-
     <nav class="navbar">
-        <i class="fas fa-bars menu-btn" onclick="toggleSidebar()"></i>
         <div onclick="showPage('home')" style="cursor:pointer; font-weight:900; color:var(--gold); font-size:1.4rem;">ROYAL FISH</div>
         <div class="nav-icons">
             <i class="fas fa-shopping-cart" onclick="openModal('cartModal')"><span class="badge" id="cart-badge">0</span></i>
         </div>
     </nav>
 
-    <div class="sidebar" id="sidebar">
-        <h2 id="userWelcome">القائمة</h2>
-        <ul class="sidebar-menu">
-            <li onclick="showPage('home')">الرئيسية</li>
-            <li id="loginMenuItem" onclick="openModal('loginModal')">تسجيل الدخول</li>
-            <hr>
-            <li onclick="showPage('shrimp')">الجمبري والكابوريا</li>
-            <li onclick="showPage('nile')">أسماك النيل</li>
-            <li onclick="showPage('sea')">سمك البحر</li>
-            <li onclick="showPage('platters')">الصواني والولائم</li>
-        </ul>
-    </div>
-
     <div id="home" class="page active">
-        <header><img src="main-logo.png.PNG" class="brand-img"></header>
-        <div class="container"><div class="grid">
-            <div class="card" onclick="showPage('shrimp')"><img src="shrimp.png.jpeg"><h3>الجمبري والكابوريا</h3></div>
-            <div class="card" onclick="showPage('nile')"><img src="tilapia.png.jpeg"><h3>أسماك النيل</h3></div>
-            <div class="card" onclick="showPage('sea')"><img src="sea-fish.png.jpeg"><h3>سمك البحر</h3></div>
-            <div class="card" onclick="showPage('platters')"><img src="platters.png.jpeg"><h3>الصواني الملكية</h3></div>
-        </div></div>
+        <header style="text-align:center; padding:40px;"><img src="main-logo.png.PNG" style="width:90%; max-width:400px; border-radius:15px; border:1px solid var(--gold);"></header>
+        <div class="container" style="max-width:1200px; margin:auto; padding:20px;">
+            <div class="grid">
+                <div class="card" onclick="showPage('shrimp')"><img src="shrimp.png.jpeg"><h3>الجمبري والكابوريا</h3></div>
+                <div class="card" onclick="showPage('nile')"><img src="tilapia.png.jpeg"><h3>أسماك النيل</h3></div>
+                <div class="card" onclick="showPage('sea')"><img src="sea-fish.png.jpeg"><h3>سمك البحر</h3></div>
+                <div class="card" onclick="showPage('platters')"><img src="platters.png.jpeg"><h3>الصواني الملكية</h3></div>
+            </div>
+        </div>
     </div>
 
     <div id="category-page" class="page">
-        <div class="container">
-            <button onclick="showPage('home')" style="color:var(--gold); background:none; border:1px solid var(--gold); padding:5px 15px; cursor:pointer; border-radius:5px">← عودة</button>
-            <h2 id="cat-title" class="section-title"></h2>
+        <div class="container" style="max-width:1200px; margin:auto; padding:20px;">
+            <button onclick="showPage('home')" style="color:var(--gold); background:none; border:1px solid var(--gold); padding:8px 20px; cursor:pointer; border-radius:8px; margin-bottom:20px;">← العودة</button>
+            <h2 id="cat-title" style="text-align:center; color:var(--gold);"></h2>
             <div id="product-grid" class="grid"></div>
         </div>
     </div>
 
     <script>
         const data = {
-            shrimp: {
-                title: "الجمبري والكابوريا",
-                items: [
-                    { name: "جمبري جامبو كبير", img: "shrimp_jumbo_large.png" },
-                    { name: "جمبري جامبو وسط", img: "shrimp_jumbo_mid.png" },
-                    { name: "جمبري أبيض", img: "shrimp_white.png" },
-                    { name: "جمبري قزازي", img: "shrimp_gzazi.png" },
-                    { name: "جمبري سركوس", img: "shrimp_sarkos.png" },
-                    { name: "كابوريا نتاية", img: "crab_female.png" },
-                    { name: "كابوريا ذكر", img: "crab_male.png" }
-                ]
-            },
-            nile: {
-                title: "أسماك النيل",
-                items: [
-                    { name: "بلطي كبير", img: "bolti_large.png" },
-                    { name: "بلطي وسط", img: "bolti_mid.png" },
-                    { name: "بوري", img: "bouri.png" },
-                    { name: "طوبار", img: "tobar.png" },
-                    { name: "جمبري نيل", img: "nile_shrimp.png" }
-                ]
-            },
-            sea: {
-                title: "سمك البحر",
-                items: [
-                    { name: "سمك شك", img: "shak.png" },
-                    { name: "سمك باغه", img: "bagha.png" },
-                    { name: "مرجان", img: "morgan.png" },
-                    { name: "سردين", img: "sardin.png" },
-                    { name: "بساريه", img: "basaria.png" }
-                ]
-            },
-            platters: {
-                title: "الصواني والولائم",
-                items: [
-                    { name: "صينية عزومة ملكية", img: "plat_1.png" },
-                    { name: "تشكيلة رويال فسفور", img: "plat_2.png" },
-                    { name: "صينية السعادة مشكل", img: "plat_3.png" }
-                ]
-            }
+            shrimp: { title: "الجمبري والكابوريا", items: [{n:"جمبري جامبو كبير", i:"shrimp_jumbo_large.png"}, {n:"جمبري أبيض", i:"shrimp_white.png"}, {n:"كابوريا نتاية", i:"crab_female.png"}] },
+            nile: { title: "أسماك النيل", items: [{n:"بلطي كبير", i:"bolti_large.png"}, {n:"بوري", i:"bouri.png"}] },
+            sea: { title: "سمك البحر", items: [{n:"سمك مرجان", i:"morgan.png"}, {n:"سردين", i:"sardin.png"}] },
+            platters: { title: "الصواني الملكية", items: [{n:"صينية عزومة ملكية", i:"plat_1.png"}] }
         };
 
         let cart = JSON.parse(localStorage.getItem('royalCart')) || [];
 
-        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
-        function openModal(id) { closeAll(); document.getElementById(id).classList.add('active'); document.getElementById('overlay').classList.add('active'); renderCart(); }
-        function closeAll() { document.querySelectorAll('.modal, .sidebar, .overlay').forEach(el => el.classList.remove('active')); }
-
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            closeAll();
             if (data[pageId]) {
                 document.getElementById('cat-title').innerText = data[pageId].title;
                 const grid = document.getElementById('product-grid');
@@ -161,11 +116,11 @@
                 data[pageId].items.forEach(item => {
                     grid.innerHTML += `
                         <div class="card">
-                            <img src="${item.img}" onerror="this.src='main-logo.png.PNG'">
+                            <img src="${item.i}" onerror="this.src='main-logo.png.PNG'">
                             <div class="card-body">
-                                <h3>${item.name}</h3>
-                                <select id="clean-${item.name}"><option>سنجاري</option><option>قشر وبطن</option><option>بدون تنظيف</option><option>فيليه</option></select>
-                                <button class="btn-buy" onclick="addToCart('${item.name}')">إضافة للسلة</button>
+                                <h3>${item.n}</h3>
+                                <select id="clean-${item.n}"><option>سنجاري</option><option>قشر وبطن</option><option>بدون تنظيف</option></select>
+                                <button class="btn-buy" onclick="addToCart('${item.n}')">إضافة للسلة</button>
                             </div>
                         </div>`;
                 });
@@ -174,49 +129,66 @@
         }
 
         function addToCart(name) {
-            const cleaning = document.getElementById(`clean-${name}`).value;
-            cart.push({ name, cleaning });
+            const clean = document.getElementById(`clean-${name}`).value;
+            cart.push({ name, clean });
             localStorage.setItem('royalCart', JSON.stringify(cart));
             updateBadges();
-            alert(`تم إضافة ${name}`);
+            alert("تمت الإضافة بنجاح ✅");
         }
 
         function updateBadges() { document.getElementById('cart-badge').innerText = cart.length; }
+        function openModal(id) { document.getElementById(id).classList.add('active'); document.getElementById('overlay').classList.add('active'); renderCart(); }
+        function closeAll() { document.querySelectorAll('.modal, .overlay').forEach(el => el.classList.remove('active')); }
+
+        function toggleCashInfo() {
+            const method = document.getElementById('paymentMethod').value;
+            document.getElementById('cashDetails').style.display = (method === 'cash') ? 'block' : 'none';
+        }
 
         function renderCart() {
             const con = document.getElementById('cartContent');
-            if(cart.length === 0) { con.innerHTML = "السلة فارغة"; document.getElementById('cartFooter').style.display="none"; return; }
-            document.getElementById('cartFooter').style.display="block";
+            if(cart.length === 0) { con.innerHTML = "السلة فارغة"; document.getElementById('checkoutForm').style.display="none"; return; }
+            document.getElementById('checkoutForm').style.display="block";
             con.innerHTML = cart.map((item, index) => `
                 <div class="cart-item">
-                    <span>${item.name} (${item.cleaning})</span>
-                    <button onclick="removeFromCart(${index})">حذف</button>
+                    <span>${item.name} (${item.clean})</span>
+                    <button onclick="removeFromCart(${index})" style="background:#ff4757; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">حذف</button>
                 </div>
             `).join('');
         }
 
         function removeFromCart(index) { cart.splice(index, 1); localStorage.setItem('royalCart', JSON.stringify(cart)); updateBadges(); renderCart(); }
 
-        function saveLogin() {
-            const name = document.getElementById('userName').value;
-            const phone = document.getElementById('userPhone').value;
-            if(name && phone) { localStorage.setItem('royalName', name); localStorage.setItem('royalPhone', phone); location.reload(); }
+        function executePurchase() {
+            const name = document.getElementById('custName').value;
+            const phone = document.getElementById('custPhone').value;
+            const address = document.getElementById('custAddress').value;
+            const payment = document.getElementById('paymentMethod').value;
+
+            if(!name || !phone || !address) { alert("برجاء ملء جميع البيانات ⚠️"); return; }
+
+            let payText = (payment === 'cash') ? "محفظة كاش (تحويل مسبق)" : "الدفع عند الاستلام";
+
+            let orderMsg = `👑 *طلب جديد من رويال فيش* 👑\n\n`;
+            orderMsg += `👤 *العميل:* ${name}\n`;
+            orderMsg += `📞 *الهاتف:* ${phone}\n`;
+            orderMsg += `📍 *العنوان:* ${address}\n`;
+            orderMsg += `💰 *طريقة الدفع:* ${payText}\n\n`;
+            orderMsg += `📋 *قائمة المشتريات:*\n`;
+            
+            cart.forEach((item, index) => {
+                orderMsg += `${index + 1}. *${item.name}* - [${item.clean}]\n`;
+            });
+
+            if(payment === 'cash') orderMsg += `\n⚠️ *سأقوم بإرسال صورة التحويل الآن..*`;
+            orderMsg += `\n\n✨ *تم الطلب من موقع رويال فيش* ✨`;
+
+            window.open(`https://wa.me/201006407185?text=${encodeURIComponent(orderMsg)}`);
+
+            cart = []; localStorage.removeItem('royalCart'); updateBadges(); closeAll();
         }
 
-        function sendOrder() {
-            const name = localStorage.getItem('royalName') || "عميل";
-            const phone = localStorage.getItem('royalPhone') || "";
-            if(!phone) { openModal('loginModal'); return; }
-            let text = `طلب جديد\nالاسم: ${name}\nالهاتف: ${phone}\n\nالطلبات:\n`;
-            cart.forEach(item => text += `- ${item.name} (${item.cleaning})\n`);
-            window.open(`https://wa.me/201006407185?text=${encodeURIComponent(text)}`);
-        }
-
-        window.onload = () => {
-            const name = localStorage.getItem('royalName');
-            if(name) { document.getElementById('userWelcome').innerText = "أهلاً، " + name; }
-            updateBadges();
-        };
+        window.onload = updateBadges;
     </script>
 </body>
 </html>
