@@ -26,8 +26,6 @@
 
         .checkout-input { width: 100%; padding: 12px; margin: 8px 0; background: #111; border: 1px solid var(--gold); color: white; border-radius: 8px; font-family: 'Cairo'; }
         
-        .cash-info { background: rgba(212, 175, 55, 0.1); border: 1px dashed var(--gold); padding: 10px; border-radius: 8px; margin-top: 10px; display: none; font-size: 0.9rem; }
-
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
         .card { background: var(--glass); backdrop-filter: blur(10px); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
         .card img { width: 100%; height: 220px; object-fit: cover; }
@@ -47,26 +45,15 @@
     <div class="overlay" id="overlay" onclick="closeAll()"></div>
 
     <div class="modal" id="cartModal">
-        <div class="modal-header"><h3>🛒 إتمام الطلب الملكي</h3><i class="fas fa-times" onclick="closeAll()" style="cursor:pointer"></i></div>
+        <div class="modal-header"><h3>🛒 تأكيد الطلبية</h3><i class="fas fa-times" onclick="closeAll()" style="cursor:pointer"></i></div>
         <div id="cartContent">السلة فارغة..</div>
         
         <div id="checkoutForm" style="display:none; margin-top:20px; border-top: 1px solid var(--gold); padding-top: 15px;">
-            <h4 style="color:var(--gold)">بيانات التسليم والدفع:</h4>
+            <h4 style="color:var(--gold)">بيانات التسليم:</h4>
             <input type="text" id="custName" class="checkout-input" placeholder="الاسم الكامل">
             <input type="tel" id="custPhone" class="checkout-input" placeholder="رقم الموبايل">
             <input type="text" id="custAddress" class="checkout-input" placeholder="العنوان بالتفصيل">
-            
-            <select id="paymentMethod" class="checkout-input" onchange="toggleCashInfo()">
-                <option value="cod">الدفع عند الاستلام</option>
-                <option value="cash">تحويل عبر محفظة كاش</option>
-            </select>
-
-            <div id="cashDetails" class="cash-info">
-                <p>يرجى تحويل المبلغ إلى الرقم التالي: <br> <strong style="font-size: 1.2rem;">01006407185</strong></p>
-                <p style="color: #ff4757;">* يرجى إرسال صورة إيصال التحويل في رسالة الواتساب القادمة لتأكيد الطلب.</p>
-            </div>
-
-            <button class="btn-checkout" onclick="executePurchase()">تأكيد وشراء الآن <i class="fab fa-whatsapp"></i></button>
+            <button class="btn-checkout" onclick="executePurchase()">إرسال الطلب عبر واتساب <i class="fab fa-whatsapp"></i></button>
         </div>
     </div>
 
@@ -78,7 +65,7 @@
     </nav>
 
     <div id="home" class="page active">
-        <header style="text-align:center; padding:40px;"><img src="main-logo.png.PNG" style="width:90%; max-width:400px; border-radius:15px; border:1px solid var(--gold);"></header>
+        <header style="text-align:center; padding:40px;"><img src="main-logo.png.PNG" style="width:90%; max-width:400px; border-radius:15px; border:2px solid var(--gold);"></header>
         <div class="container" style="max-width:1200px; margin:auto; padding:20px;">
             <div class="grid">
                 <div class="card" onclick="showPage('shrimp')"><img src="shrimp.png.jpeg"><h3>الجمبري والكابوريا</h3></div>
@@ -99,10 +86,22 @@
 
     <script>
         const data = {
-            shrimp: { title: "الجمبري والكابوريا", items: [{n:"جمبري جامبو كبير", i:"shrimp_jumbo_large.png"}, {n:"جمبري أبيض", i:"shrimp_white.png"}, {n:"كابوريا نتاية", i:"crab_female.png"}] },
-            nile: { title: "أسماك النيل", items: [{n:"بلطي كبير", i:"bolti_large.png"}, {n:"بوري", i:"bouri.png"}] },
-            sea: { title: "سمك البحر", items: [{n:"سمك مرجان", i:"morgan.png"}, {n:"سردين", i:"sardin.png"}] },
-            platters: { title: "الصواني الملكية", items: [{n:"صينية عزومة ملكية", i:"plat_1.png"}] }
+            shrimp: { title: "الجمبري والكابوريا", items: [
+                {n:"جمبري جامبو كبير", i:"shrimp_jumbo_large.png"},
+                {n:"جمبري جامبو وسط", i:"shrimp_jumbo_mid.png"},
+                {n:"كابوريا نتاية", i:"crab_female.png"}
+            ]},
+            nile: { title: "أسماك النيل", items: [
+                {n:"بلطي كبير", i:"bolti_large.png"},
+                {n:"بوري", i:"bouri.png"}
+            ]},
+            sea: { title: "سمك البحر", items: [
+                {n:"سمك مرجان", i:"morgan.png"},
+                {n:"سردين", i:"sardin.png"}
+            ]},
+            platters: { title: "الصواني الملكية", items: [
+                {n:"صينية عزومة ملكية", i:"plat_1.png"}
+            ]}
         };
 
         let cart = JSON.parse(localStorage.getItem('royalCart')) || [];
@@ -140,11 +139,6 @@
         function openModal(id) { document.getElementById(id).classList.add('active'); document.getElementById('overlay').classList.add('active'); renderCart(); }
         function closeAll() { document.querySelectorAll('.modal, .overlay').forEach(el => el.classList.remove('active')); }
 
-        function toggleCashInfo() {
-            const method = document.getElementById('paymentMethod').value;
-            document.getElementById('cashDetails').style.display = (method === 'cash') ? 'block' : 'none';
-        }
-
         function renderCart() {
             const con = document.getElementById('cartContent');
             if(cart.length === 0) { con.innerHTML = "السلة فارغة"; document.getElementById('checkoutForm').style.display="none"; return; }
@@ -159,33 +153,37 @@
 
         function removeFromCart(index) { cart.splice(index, 1); localStorage.setItem('royalCart', JSON.stringify(cart)); updateBadges(); renderCart(); }
 
+        // هذه هي الوظيفة المسؤولة عن شكل الرسالة على واتساب
         function executePurchase() {
             const name = document.getElementById('custName').value;
             const phone = document.getElementById('custPhone').value;
             const address = document.getElementById('custAddress').value;
-            const payment = document.getElementById('paymentMethod').value;
 
-            if(!name || !phone || !address) { alert("برجاء ملء جميع البيانات ⚠️"); return; }
+            if(!name || !phone || !address) { alert("برجاء ملء جميع البيانات لإتمام الطلب ⚠️"); return; }
 
-            let payText = (payment === 'cash') ? "محفظة كاش (تحويل مسبق)" : "الدفع عند الاستلام";
-
+            // بناء نص الرسالة المنسق
             let orderMsg = `👑 *طلب جديد من رويال فيش* 👑\n\n`;
             orderMsg += `👤 *العميل:* ${name}\n`;
             orderMsg += `📞 *الهاتف:* ${phone}\n`;
-            orderMsg += `📍 *العنوان:* ${address}\n`;
-            orderMsg += `💰 *طريقة الدفع:* ${payText}\n\n`;
+            orderMsg += `📍 *العنوان:* ${address}\n\n`;
             orderMsg += `📋 *قائمة المشتريات:*\n`;
             
             cart.forEach((item, index) => {
-                orderMsg += `${index + 1}. *${item.name}* - [${item.clean}]\n`;
+                orderMsg += `${index + 1}. *${item.name}* \n   [تجهيز: ${item.clean}]\n`;
             });
 
-            if(payment === 'cash') orderMsg += `\n⚠️ *سأقوم بإرسال صورة التحويل الآن..*`;
-            orderMsg += `\n\n✨ *تم الطلب من موقع رويال فيش* ✨`;
+            orderMsg += `\n--------------------------\n`;
+            orderMsg += `✨ *شكراً لاختياركم رويال فيش* ✨`;
 
-            window.open(`https://wa.me/201006407185?text=${encodeURIComponent(orderMsg)}`);
+            // فتح واتساب بالرسالة المجهزة
+            const whatsappNumber = "201006407185"; 
+            window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(orderMsg)}`);
 
-            cart = []; localStorage.removeItem('royalCart'); updateBadges(); closeAll();
+            // تصفير السلة بعد النجاح
+            cart = []; 
+            localStorage.removeItem('royalCart'); 
+            updateBadges(); 
+            closeAll();
         }
 
         window.onload = updateBadges;
