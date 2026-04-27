@@ -42,9 +42,6 @@
         .modal.active { display: block; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--gold); padding-bottom: 10px; margin-bottom: 15px; }
         
-        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--glass); }
-        .cart-item button { background: #ff4757; border: none; color: white; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
-
         header { text-align: center; padding: 40px 10px; }
         .brand-img { width: 90%; max-width: 500px; border-radius: 15px; border: 1px solid var(--gold); }
         .container { max-width: 1200px; margin: auto; padding: 20px; }
@@ -53,8 +50,10 @@
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
         .card { background: var(--glass); backdrop-filter: blur(10px); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); text-align: center; transition: 0.3s; }
         .card img { width: 100%; height: 220px; object-fit: cover; background: #111; }
-        .card:hover { transform: translateY(-5px); border-color: var(--gold); }
         .card-body { padding: 15px; }
+
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--glass); }
+        .cart-item button { background: #ff4757; border: none; color: white; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
 
         select { width: 100%; padding: 8px; margin: 10px 0; background: #1a1a1a; color: white; border: 1px solid var(--gold); border-radius: 5px; }
         .btn-buy { width: 100%; background: var(--gold); color: black; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
@@ -71,16 +70,11 @@
     <div class="overlay" id="overlay" onclick="closeAll()"></div>
 
     <div class="modal" id="cartModal">
-        <div class="modal-header"><h3>🛒 السلة الملكية</h3><i class="fas fa-times" onclick="closeAll()" style="cursor:pointer"></i></div>
-        <div id="cartContent">السلة فارغة حالياً..</div>
+        <div class="modal-header"><h3>🛒 السلة الملكية</h3><i class="fas fa-times" onclick="closeAll()"></i></div>
+        <div id="cartContent">السلة فارغة..</div>
         <div id="cartFooter" style="display:none; margin-top:20px;">
-            <button class="btn-whatsapp" onclick="sendOrder()">تأكيد الطلب عبر واتساب <i class="fab fa-whatsapp"></i></button>
+            <button class="btn-whatsapp" onclick="sendOrder()">تأكيد عبر واتساب <i class="fab fa-whatsapp"></i></button>
         </div>
-    </div>
-
-    <div class="modal" id="favModal">
-        <div class="modal-header"><h3>❤️ المفضلة</h3><i class="fas fa-times" onclick="closeAll()" style="cursor:pointer"></i></div>
-        <div id="favContent">قائمة المفضلة فارغة..</div>
     </div>
 
     <div class="modal" id="loginModal">
@@ -131,7 +125,6 @@
     </div>
 
     <script>
-        // تحديث مصفوفة البيانات بأسماء الملفات الصحيحة من لقطة الشاشة
         const data = {
             shrimp: {
                 title: "الجمبري والكابوريا",
@@ -176,15 +169,9 @@
         };
 
         let cart = JSON.parse(localStorage.getItem('royalCart')) || [];
-        let favorites = JSON.parse(localStorage.getItem('royalFav')) || [];
-
-        function saveToStorage() {
-            localStorage.setItem('royalCart', JSON.stringify(cart));
-            localStorage.setItem('royalFav', JSON.stringify(favorites));
-        }
 
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
-        function openModal(id) { closeAll(); document.getElementById(id).classList.add('active'); document.getElementById('overlay').classList.add('active'); renderCart(); renderFav(); }
+        function openModal(id) { closeAll(); document.getElementById(id).classList.add('active'); document.getElementById('overlay').classList.add('active'); renderCart(); }
         function closeAll() { document.querySelectorAll('.modal, .sidebar, .overlay').forEach(el => el.classList.remove('active')); }
 
         function showPage(pageId) {
@@ -195,14 +182,15 @@
                 const grid = document.getElementById('product-grid');
                 grid.innerHTML = "";
                 data[pageId].items.forEach(item => {
+                    // الكود المهم هنا: encodeURIComponent للتعامل مع المسافات في اسم الملف
+                    const safeImgPath = encodeURIComponent(item.img);
                     grid.innerHTML += `
                         <div class="card">
-                            <img src="${item.img}" onerror="this.src='main-logo.png.PNG'">
+                            <img src="${safeImgPath}" onerror="this.src='main-logo.png.PNG'">
                             <div class="card-body">
                                 <h3>${item.name}</h3>
-                                <select id="clean-${item.name}"><option>سنجاري</option><option>قشر وبطن</option><option>بدون تنظيف</option><option>فيليه (مخلي)</option></select>
+                                <select id="clean-${item.name}"><option>سنجاري</option><option>قشر وبطن</option><option>بدون تنظيف</option><option>فيليه</option></select>
                                 <button class="btn-buy" onclick="addToCart('${item.name}')">إضافة للسلة</button>
-                                <button style="background:none; border:none; color:#ff4757; cursor:pointer;" onclick="addToFav('${item.name}')"><i class="fas fa-heart"></i> للمفضلة</button>
                             </div>
                         </div>`;
                 });
@@ -213,79 +201,45 @@
         function addToCart(name) {
             const cleaning = document.getElementById(`clean-${name}`).value;
             cart.push({ name, cleaning });
-            saveToStorage();
+            localStorage.setItem('royalCart', JSON.stringify(cart));
             updateBadges();
-            alert(`تم إضافة ${name} لسلتك`);
+            alert(`تم إضافة ${name}`);
         }
 
-        function addToFav(name) {
-            if(!favorites.includes(name)) {
-                favorites.push(name);
-                saveToStorage();
-                updateBadges();
-                alert(`تم إضافة ${name} للمفضلة`);
-            }
-        }
-
-        function updateBadges() {
-            document.getElementById('cart-badge').innerText = cart.length;
-            document.getElementById('fav-badge').innerText = favorites.length;
-        }
+        function updateBadges() { document.getElementById('cart-badge').innerText = cart.length; }
 
         function renderCart() {
             const con = document.getElementById('cartContent');
-            if(cart.length === 0) { con.innerHTML = "السلة فارغة حالياً.."; document.getElementById('cartFooter').style.display="none"; return; }
+            if(cart.length === 0) { con.innerHTML = "السلة فارغة"; document.getElementById('cartFooter').style.display="none"; return; }
             document.getElementById('cartFooter').style.display="block";
             con.innerHTML = cart.map((item, index) => `
                 <div class="cart-item">
                     <span>${item.name} (${item.cleaning})</span>
-                    <button onclick="removeFromCart(${index})"><i class="fas fa-trash"></i></button>
+                    <button onclick="removeFromCart(${index})">حذف</button>
                 </div>
             `).join('');
         }
 
-        function removeFromCart(index) { cart.splice(index, 1); saveToStorage(); updateBadges(); renderCart(); }
-
-        function renderFav() {
-            const con = document.getElementById('favContent');
-            if(favorites.length === 0) { con.innerHTML = "قائمة المفضلة فارغة.."; return; }
-            con.innerHTML = favorites.map((item, index) => `
-                <div class="cart-item">
-                    <span>${item}</span>
-                    <button onclick="removeFromFav(${index})"><i class="fas fa-trash"></i></button>
-                </div>
-            `).join('');
-        }
-
-        function removeFromFav(index) { favorites.splice(index, 1); saveToStorage(); updateBadges(); renderFav(); }
+        function removeFromCart(index) { cart.splice(index, 1); localStorage.setItem('royalCart', JSON.stringify(cart)); updateBadges(); renderCart(); }
 
         function saveLogin() {
             const name = document.getElementById('userName').value;
             const phone = document.getElementById('userPhone').value;
-            if(name && phone) { 
-                localStorage.setItem('royalName', name); 
-                localStorage.setItem('royalPhone', phone); 
-                location.reload(); 
-            }
+            if(name && phone) { localStorage.setItem('royalName', name); localStorage.setItem('royalPhone', phone); location.reload(); }
         }
 
         function sendOrder() {
-            const name = localStorage.getItem('royalName') || "عميل جديد";
+            const name = localStorage.getItem('royalName') || "عميل";
             const phone = localStorage.getItem('royalPhone') || "";
-            if(!localStorage.getItem('royalPhone')) { alert("سجل دخولك أولاً لإتمام الطلب"); openModal('loginModal'); return; }
-            
-            let text = `طلب جديد من رويال فيش 👑\nالاسم: ${name}\nالهاتف: ${phone}\n\nالطلبات:\n`;
-            cart.forEach(item => text += `- ${item.name} (تجهيز: ${item.cleaning})\n`);
+            if(!phone) { openModal('loginModal'); return; }
+            let text = `طلب جديد\nالاسم: ${name}\nالهاتف: ${phone}\n\nالطلبات:\n`;
+            cart.forEach(item => text += `- ${item.name} (${item.cleaning})\n`);
             window.open(`https://wa.me/201006407185?text=${encodeURIComponent(text)}`);
         }
 
         window.onload = () => {
             const name = localStorage.getItem('royalName');
-            if(name) {
-                document.getElementById('userWelcome').innerText = "أهلاً، " + name;
-                document.getElementById('loginMenuItem').innerText = "خروج / تبديل الحساب";
-                document.getElementById('loginMenuItem').onclick = () => { localStorage.clear(); location.reload(); };
-            }
+            if(name) { document.getElementById('userWelcome').innerText = "أهلاً، " + name; }
             updateBadges();
         };
     </script>
